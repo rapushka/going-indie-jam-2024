@@ -1,0 +1,1 @@
+pub const PLAYER_MOVEMENT_SPEED: f32 = 3.5;

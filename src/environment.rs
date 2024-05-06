@@ -16,16 +16,16 @@ impl Plugin for EnvironmentPlugin {
 fn spawn_light(
     mut commands: Commands,
 ) {
-    let light = PointLightBundle {
-        point_light: PointLight {
-            intensity: 1_000_000.0,
+    commands.spawn((
+        PointLightBundle {
+            point_light: PointLight {
+                intensity: 1_000_000.0,
+                ..default()
+            },
+            transform: Transform::from_xyz(0.0, 5.0, 0.0),
             ..default()
         },
-        transform: Transform::from_xyz(0.0, 5.0, 0.0),
-        ..default()
-    };
-
-    commands.spawn(light);
+    ));
 }
 
 fn spawn_floor(
@@ -33,12 +33,12 @@ fn spawn_floor(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    let name = Name::new("floor");
-    let pbr = PbrBundle {
-        mesh: meshes.add(Plane3d::default().mesh().size(15.0, 15.0)),
-        material: materials.add(Color::DARK_GREEN),
-        ..default()
-    };
-
-    commands.spawn((name, pbr));
+    commands.spawn((
+        Name::new("floor"),
+        PbrBundle {
+            mesh: meshes.add(Plane3d::default().mesh().size(15.0, 15.0)),
+            material: materials.add(Color::DARK_GREEN),
+            ..default()
+        },
+    ));
 }

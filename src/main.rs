@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use bevy_inspector_egui::quick::*;
+
 use crate::camera::*;
 use crate::environment::EnvironmentPlugin;
 use crate::player::*;
@@ -7,6 +8,7 @@ use crate::player::*;
 mod player;
 mod camera;
 mod environment;
+mod constants;
 
 fn main() {
     App::new()
