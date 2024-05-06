@@ -1013,6 +1013,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_toon_shader"
+version = "0.4.0"
+source = "git+https://github.com/tbillington/bevy_toon_shader?branch=bevy-0-13#0471529eb8c1c42d906f7a15355c03f41784116e"
+dependencies = [
+ "bevy",
+]
+
+[[package]]
 name = "bevy_transform"
 version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2110,6 +2118,7 @@ dependencies = [
  "bevy",
  "bevy-inspector-egui",
  "bevy_third_person_camera",
+ "bevy_toon_shader",
 ]
 
 [[package]]

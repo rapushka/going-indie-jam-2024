@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use bevy_third_person_camera::*;
 use bevy_third_person_camera::camera::*;
+use bevy_toon_shader::*;
 
 pub struct CameraPlugin;
 
@@ -28,5 +29,6 @@ fn spawn_camera(
             transform: Transform::from_xyz(-2.0, 2.5, 5.0).looking_at(Vec3::ZERO, Vec3::Y),
             ..default()
         },
+        ToonShaderMainCamera,
     ));
 }

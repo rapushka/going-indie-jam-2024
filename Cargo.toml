@@ -9,6 +9,7 @@ edition = "2021"
 bevy = "0.13.2"
 bevy-inspector-egui = "0.24.0"
 bevy_third_person_camera = "0.1.10"
+bevy_toon_shader = { git = "https://github.com/tbillington/bevy_toon_shader", branch = "bevy-0-13" }
 
 [profile.dev]
 opt-level = 0

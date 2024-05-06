@@ -1,5 +1,7 @@
 use bevy::prelude::*;
+use bevy::scene::SceneInstance;
 use bevy_third_person_camera::*;
+use bevy_toon_shader::ToonShaderMaterial;
 
 use crate::constants;
 
@@ -11,6 +13,7 @@ impl Plugin for PlayerPlugin {
             .add_systems(Startup, spawn_player)
             .add_systems(Update, (
                 move_player,
+                customize_scene_materials,
             ))
         ;
     }
@@ -29,7 +32,7 @@ fn spawn_player(
     let scale = Vec3 { x: 0.5, y: 0.5, z: 0.5 };
 
     commands.spawn((
-        bevy::core::Name::new("player"),
+        Name::new("player"),
         Player,
         MovementSpeed(constants::PLAYER_MOVEMENT_SPEED),
         ThirdPersonCameraTarget,
@@ -38,6 +41,7 @@ fn spawn_player(
             transform: Transform::from_xyz(0.0, 0.0, 0.0).with_scale(scale),
             ..default()
         },
+        CustomizeMaterial,
     ));
 }
 
@@ -72,11 +76,39 @@ fn move_player(
             let movement = direction * scaled_speed;
 
             player_transform.translation += movement;
-            
+
             // rotate player to moving direction
             if direction.length_squared() > 0.0 {
                 player_transform.look_to(-direction, Vec3::Y);
             }
+        }
+    }
+}
+
+// ---
+
+
+#[derive(Component)]
+struct CustomizeMaterial;
+
+pub fn customize_scene_materials(
+    unloaded_instances: Query<(Entity, &SceneInstance), With<CustomizeMaterial>>,
+    handles: Query<(Entity, &Handle<StandardMaterial>)>,
+    pbr_materials: Res<Assets<StandardMaterial>>,
+    scene_manager: Res<SceneSpawner>,
+    mut custom_materials: ResMut<Assets<ToonShaderMaterial>>,
+    mut cmds: Commands,
+) {
+    for (entity, instance) in unloaded_instances.iter() {
+        if scene_manager.instance_is_ready(**instance) {
+            cmds.entity(entity).remove::<CustomizeMaterial>();
+        }
+        // Iterate over all entities in scene (once it's loaded)
+        let handles = handles.iter_many(scene_manager.iter_instance_entities(**instance));
+        for (entity, material_handle) in handles {
+            let Some(material) = pbr_materials.get(material_handle) else { continue; };
+            let custom = custom_materials.add(ToonShaderMaterial::default());
+            cmds.entity(entity).insert(custom).remove::<Handle<StandardMaterial>>();
         }
     }
 }
