@@ -25,20 +25,20 @@ struct MovementSpeed(f32);
 
 fn spawn_player(
     mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
+    asset_server: Res<AssetServer>,
 ) {
+    let scale = Vec3 { x: 0.5, y: 0.5, z: 0.5 };
+
     commands.spawn((
         bevy::core::Name::new("player"),
         Player,
         MovementSpeed(constants::PLAYER_MOVEMENT_SPEED),
-        PbrBundle {
-            mesh: meshes.add(Cuboid::default().mesh()),
-            material: materials.add(Color::BLUE),
-            transform: Transform::from_xyz(0.0, 0.5, 0.0),
+        ThirdPersonCameraTarget,
+        SceneBundle {
+            scene: asset_server.load("models/Character.gltf#Scene0"),
+            transform: Transform::from_xyz(0.0, 0.0, 0.0).with_scale(scale),
             ..default()
         },
-        ThirdPersonCameraTarget,
     ));
 }
 
@@ -73,6 +73,11 @@ fn move_player(
             let movement = direction * scaled_speed;
 
             player_transform.translation += movement;
+            
+            // rotate player to moving direction
+            if direction.length_squared() > 0.0 {
+                player_transform.look_to(-direction, Vec3::Y);
+            }
         }
     }
 }
