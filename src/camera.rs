@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 use bevy_third_person_camera::*;
-use bevy_third_person_camera::camera::Zoom;
+use bevy_third_person_camera::camera::*;
 
 pub struct CameraPlugin;
 
@@ -20,6 +20,8 @@ fn spawn_camera(
             cursor_lock_key: KeyCode::Escape,
             mouse_sensitivity: 5.0,
             zoom: Zoom::new(3.0, 10.0),
+            offset_enabled: true,
+            offset: Offset::new(0.0, 1.0),
             ..default()
         },
         Camera3dBundle {
