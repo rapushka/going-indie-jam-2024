@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use bevy_inspector_egui::egui::FontFamily::Name;
+use bevy_third_person_camera::*;
 
 use crate::constants;
 
@@ -37,6 +38,7 @@ fn spawn_player(
             transform: Transform::from_xyz(0.0, 0.5, 0.0),
             ..default()
         },
+        ThirdPersonCameraTarget,
     ));
 }
 

@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy_third_person_camera::*;
 use bevy_inspector_egui::quick::*;
 
 use crate::camera::*;
@@ -15,6 +16,7 @@ fn main() {
         .add_plugins((
             DefaultPlugins,
             WorldInspectorPlugin::new(),
+            ThirdPersonCameraPlugin,
             PlayerPlugin,
             CameraPlugin,
             EnvironmentPlugin,
