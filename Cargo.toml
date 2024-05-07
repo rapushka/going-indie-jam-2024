@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 bevy = "0.13.2"
+bevy_rapier3d = { version = "0.26.0", features = ["debug-render-3d"]  }
 bevy-inspector-egui = "0.24.0"
 bevy_third_person_camera = "0.1.10"
 

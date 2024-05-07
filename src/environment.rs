@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy_rapier3d::prelude::*;
 
 pub struct EnvironmentPlugin;
 
@@ -53,5 +54,11 @@ fn spawn_floor(
             material: material,
             ..default()
         },
+        // Physics
+        Collider::compound(vec![(
+            Vec3::new(0.0, -0.1, 0.0),
+            Quat::IDENTITY,
+            Collider::cuboid(7.5, 0.1, 7.5)
+        )]),
     ));
 }
