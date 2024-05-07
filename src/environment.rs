@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use bevy_rapier3d::na::Quaternion;
 use bevy_rapier3d::prelude::*;
 
 pub struct EnvironmentPlugin;
@@ -61,7 +60,5 @@ fn spawn_floor(
             Quat::IDENTITY,
             Collider::cuboid(7.5, 0.1, 7.5)
         )]),
-    ))
-    // .insert(TransformBundle::from(Transform::from_xyz(0.0, -2.0, 0.0)))
-    ;
+    ));
 }
