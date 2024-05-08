@@ -1,7 +1,6 @@
 use bevy::prelude::*;
-use bevy::utils::info;
 use bevy_rapier3d::prelude::*;
-use bevy_rapier3d::rapier::prelude::Ray;
+
 use crate::constants;
 use crate::environment::Ground;
 use crate::player::Player;
@@ -59,7 +58,7 @@ pub fn do_jump(
     rapier_context: Res<RapierContext>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut players: Query<(Entity, &JumpForce, &mut ExternalImpulse, &mut Velocity, &mut SecondJumpLeft), With<Player>>,
-    mut grounds: Query<Entity, With<Ground>>,
+    grounds: Query<Entity, With<Ground>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
         for (player, jump_force, mut ext_impulse, mut velocity, mut double_jump) in players.iter_mut() {
