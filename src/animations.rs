@@ -1,19 +1,18 @@
 use std::collections::HashMap;
 use bevy::prelude::*;
-use crate::animations::animation_key::*;
+use crate::player::Player;
 
-pub mod animation_key {
-    pub const IDLE: i32 = 0;
-    pub const DEATH: i32 = 1;
-    pub const JUMP: i32 = 2;
-    pub const JUMP_IDLE: i32 = 3;
-    pub const JUMP_LAND: i32 = 4;
-    pub const RUN: i32 = 5;
-    pub const WALK: i32 = 6;
-}
+// Keys
+pub const IDLE: i32 = 0;
+pub const DEATH: i32 = 1;
+pub const JUMP: i32 = 2;
+pub const JUMP_IDLE: i32 = 3;
+pub const JUMP_LAND: i32 = 4;
+pub const RUN: i32 = 5;
+pub const WALK: i32 = 6;
 
 #[derive(Resource)]
-struct Animations(HashMap<i32, Handle<AnimationClip>>);
+pub struct Animations(pub(crate) HashMap<i32, Handle<AnimationClip>>);
 
 pub struct AnimationsPlugin;
 
@@ -47,9 +46,9 @@ fn load_animations(
 
 fn idle_player_on_spawned(
     animations: Res<Animations>,
-    mut players: Query<&mut AnimationPlayer, Added<AnimationPlayer>>,
+    mut animators: Query<&mut AnimationPlayer, Added<AnimationPlayer>>,
 ) {
-    for mut player in &mut players {
-        player.play(animations.0[&IDLE].clone_weak()).repeat();
+    for mut animator in &mut animators {
+        animator.play(animations.0[&IDLE].clone_weak()).repeat();
     }
 }

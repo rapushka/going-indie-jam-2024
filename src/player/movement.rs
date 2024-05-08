@@ -1,9 +1,12 @@
+use std::time::Duration;
 use bevy::prelude::*;
+use bevy::utils::info;
 use bevy_rapier3d::prelude::*;
 
-use crate::constants;
+use crate::{animations, constants};
 use crate::environment::Ground;
 use crate::player::Player;
+use crate::animations::*;
 
 #[derive(Component)]
 pub struct MovementSpeed(pub f32);
@@ -19,6 +22,8 @@ pub fn move_player(
     time: Res<Time>,
     mut players: Query<(&mut Transform, &MovementSpeed), With<Player>>,
     cameras: Query<&Transform, (With<Camera3d>, Without<Player>)>,
+    animations: Res<Animations>,
+    mut animators: Query<&mut AnimationPlayer>,
 ) {
     let scaled_speed = constants::PLAYER_MOVEMENT_SPEED * time.delta_seconds();
 
@@ -47,11 +52,31 @@ pub fn move_player(
             player_transform.translation += movement;
 
             // rotate player to moving direction
-            if direction.length_squared() > 0.0 {
+            let is_moving = direction.length_squared() > 0.0;
+            if is_moving {
                 player_transform.look_to(-direction, Vec3::Y);
+            }
+
+            // animation
+            for mut animator in &mut animators {
+                let key = if is_moving { &RUN } else { &IDLE };
+
+                play_animation(&animations, &mut animator, &key);
             }
         }
     }
+}
+
+fn play_animation(
+    animations: &Res<Animations>,
+    animator: &mut Mut<AnimationPlayer>,
+    key: &i32,
+) {
+    animator.play_with_transition(
+        animations.0[key].clone_weak(),
+        Duration::from_millis(250), // TODO: huh?
+    )
+        .repeat();
 }
 
 pub fn do_jump(
