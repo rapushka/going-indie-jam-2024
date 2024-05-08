@@ -1,9 +1,6 @@
-use std::time::Duration;
-
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
-use crate::animations::*;
 use crate::constants;
 use crate::environment::Ground;
 use crate::player::Player;
@@ -22,6 +19,9 @@ pub struct IsGrounded(pub bool);
 
 #[derive(Component)]
 pub struct MoveDirection(pub Vec3);
+
+#[derive(Event)]
+pub struct Jump(pub Entity);
 
 pub fn read_movement(
     input: Res<ButtonInput<KeyCode>>,
@@ -74,21 +74,19 @@ pub fn rotate_to_moving_direction(
     }
 }
 
-pub fn do_jump(
+pub fn read_jump_input(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut players: Query<(&JumpForce, &mut ExternalImpulse, &mut Velocity, &IsGrounded, &mut SecondJumpLeft), With<Player>>,
+    mut players: Query<(Entity, &IsGrounded, &mut SecondJumpLeft), With<Player>>,
+    mut jump_event: EventWriter<Jump>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
-        for (jump_force, mut ext_impulse, mut velocity, is_grounded, mut double_jump) in players.iter_mut() {
+        for (player, is_grounded, mut double_jump) in players.iter_mut() {
             if is_grounded.0 {
-                velocity.linvel = Vec3::ZERO;
-                ext_impulse.impulse = Vec3::new(0.0, jump_force.0, 0.0);
-
+                jump_event.send(Jump(player));
                 double_jump.0 = true;
             } else {
                 if double_jump.0 {
-                    velocity.linvel = Vec3::ZERO;
-                    ext_impulse.impulse = Vec3::new(0.0, jump_force.0, 0.0);
+                    jump_event.send(Jump(player));
                 }
 
                 double_jump.0 = false;
@@ -97,14 +95,34 @@ pub fn do_jump(
     }
 }
 
+pub fn do_jump(
+    mut players: Query<(&JumpForce, &mut ExternalImpulse, &mut Velocity), With<Player>>,
+    mut jump_event: EventReader<Jump>,
+) {
+    for e in jump_event.read() {
+        if let Ok((jump_force, mut ext_impulse, mut velocity)) = players.get_mut(e.0) {
+            velocity.linvel = Vec3::ZERO;
+            ext_impulse.impulse = Vec3::new(0.0, jump_force.0, 0.0);
+        }
+    }
+}
+
 pub fn update_grounded(
     rapier_context: Res<RapierContext>,
-    mut players: Query<(Entity, &mut IsGrounded), With<Player>>,
+    mut players: Query<(Entity, &mut IsGrounded, &mut SecondJumpLeft), With<Player>>,
     grounds: Query<Entity, With<Ground>>,
 ) {
-    for (player, mut is_grounded) in players.iter_mut() {
+    for (player, mut is_grounded, mut double_jump) in players.iter_mut() {
+        is_grounded.0 = false;
+
         for ground in grounds.iter() {
-            is_grounded.0 = rapier_context.contact_pair(player, ground).is_some();
+            let has_contact = rapier_context.contact_pair(player, ground).is_some();
+            if has_contact == true {
+                is_grounded.0 = true;
+                double_jump.0 = true;
+
+                return;
+            }
         }
     }
 }

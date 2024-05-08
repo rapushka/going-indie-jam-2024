@@ -12,10 +12,13 @@ pub struct PlayerPlugin;
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app
+            .add_event::<Jump>()
+
             .add_systems(Startup, spawn_player)
 
             .add_systems(Update, (
                 read_movement,
+                read_jump_input,
             ).in_set(Order::Input))
 
             .add_systems(Update, (
