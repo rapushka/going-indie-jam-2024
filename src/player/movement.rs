@@ -118,6 +118,7 @@ pub fn update_grounded(
         for ground in grounds.iter() {
             let has_contact = rapier_context.contact_pair(player, ground).is_some();
             if has_contact == true {
+                
                 is_grounded.0 = true;
                 double_jump.0 = true;
 

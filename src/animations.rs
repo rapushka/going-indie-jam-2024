@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::time::Duration;
 use bevy::prelude::*;
+use bevy_rapier3d::dynamics::{ExternalImpulse, Velocity};
 use crate::Order;
 use crate::player::*;
 use crate::player::movement::*;
@@ -27,6 +28,8 @@ impl Plugin for AnimationsPlugin {
             .add_systems(Update, (
                 idle_player_on_spawned,
                 play_run_animation,
+                play_airborn_animation,
+                play_jump_animation,
             ).in_set(Order::View))
         ;
     }
@@ -58,12 +61,16 @@ fn idle_player_on_spawned(
 }
 
 fn play_run_animation(
+    mut players: Query<(&MoveDirection, &IsGrounded), With<Player>>,
     animations: Res<Animations>,
     mut animators: Query<&mut AnimationPlayer>,
-    mut players: Query<&MoveDirection, With<Player>>,
 ) {
-    for direction in players.iter() {
+    for (direction, is_grounded) in players.iter() {
         for mut animator in &mut animators {
+            if !is_grounded.0 {
+                continue;
+            }
+
             let is_moving = direction.0.length_squared() > 0.0;
             let key = if is_moving { &RUN } else { &IDLE };
 
@@ -72,6 +79,46 @@ fn play_run_animation(
                 Duration::from_millis(250), // TODO: huh?
             )
                 .repeat();
+        }
+    }
+}
+
+fn play_airborn_animation(
+    mut players: Query<&IsGrounded, With<Player>>,
+    animations: Res<Animations>,
+    mut animators: Query<&mut AnimationPlayer>,
+) {
+    for is_grounded in players.iter() {
+        for mut animator in &mut animators {
+            if is_grounded.0 {
+                continue;
+            }
+            let is_playing_jump_start = animator.is_playing_clip(&animations.0[&JUMP].clone_weak());
+
+            if is_playing_jump_start {
+                continue;
+            }
+
+            animator.play_with_transition(
+                animations.0[&JUMP_IDLE].clone_weak(),
+                Duration::from_millis(250), // TODO: huh?
+            )
+                .repeat();
+        }
+    }
+}
+
+pub fn play_jump_animation(
+    mut jump_event: EventReader<Jump>,
+    animations: Res<Animations>,
+    mut animators: Query<&mut AnimationPlayer>,
+) {
+    for _e in jump_event.read() {
+        for mut animator in &mut animators {
+            animator.play_with_transition(
+                animations.0[&JUMP].clone_weak(),
+                Duration::from_millis(250), // TODO: huh?
+            );
         }
     }
 }
