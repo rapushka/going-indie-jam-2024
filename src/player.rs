@@ -13,9 +13,15 @@ impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_systems(Startup, spawn_player)
+
+            .add_systems(Update, (
+                read_movement,
+            ).in_set(Order::Input))
+
             .add_systems(Update, (
                 update_grounded,
             ).in_set(Order::Physics))
+
             .add_systems(Update, (
                 move_player,
                 do_jump,
@@ -57,5 +63,6 @@ fn spawn_player(
         ExternalImpulse::default(),
     ))
         .insert(LockedAxes::ROTATION_LOCKED)
+        .insert(MoveDirection(Vec3::ZERO))
     ;
 }
