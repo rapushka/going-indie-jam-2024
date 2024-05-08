@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use bevy_third_person_camera::*;
 
-use crate::constants;
+use crate::{constants, Order};
 use crate::player::movement::*;
 
 mod movement;
@@ -14,9 +14,12 @@ impl Plugin for PlayerPlugin {
         app
             .add_systems(Startup, spawn_player)
             .add_systems(Update, (
+                update_grounded,
+            ).in_set(Order::Physics))
+            .add_systems(Update, (
                 move_player,
                 do_jump,
-            ))
+            ).in_set(Order::GameLogic))
         ;
     }
 }
@@ -42,6 +45,7 @@ fn spawn_player(
             ..default()
         },
         SecondJumpLeft(true),
+        IsGrounded(false),
 
         // physics
         KinematicCharacterController::default(),
