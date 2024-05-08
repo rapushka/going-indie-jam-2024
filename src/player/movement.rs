@@ -1,6 +1,9 @@
 use bevy::prelude::*;
+use bevy::utils::info;
 use bevy_rapier3d::prelude::*;
+use bevy_rapier3d::rapier::prelude::Ray;
 use crate::constants;
+use crate::environment::Ground;
 use crate::player::Player;
 
 #[derive(Component)]
@@ -8,6 +11,9 @@ pub struct MovementSpeed(pub f32);
 
 #[derive(Component)]
 pub struct JumpForce(pub f32);
+
+#[derive(Component)]
+pub struct SecondJumpLeft(pub bool);
 
 pub fn move_player(
     input: Res<ButtonInput<KeyCode>>,
@@ -50,13 +56,29 @@ pub fn move_player(
 }
 
 pub fn do_jump(
+    rapier_context: Res<RapierContext>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut ext_impulses: Query<(&JumpForce, &mut ExternalImpulse, &mut Velocity), With<Player>>,
+    mut players: Query<(Entity, &JumpForce, &mut ExternalImpulse, &mut Velocity, &mut SecondJumpLeft), With<Player>>,
+    mut grounds: Query<Entity, With<Ground>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
-        for (jump_force, mut ext_impulse, mut velocity) in ext_impulses.iter_mut() {
-            velocity.linvel = Vec3::ZERO;
-            ext_impulse.impulse = Vec3::new(0.0, jump_force.0, 0.0);
+        for (player, jump_force, mut ext_impulse, mut velocity, mut double_jump) in players.iter_mut() {
+            for ground in grounds.iter() {
+                if let Some(_contact_pair) = rapier_context.contact_pair(player, ground) {
+                    velocity.linvel = Vec3::ZERO;
+                    ext_impulse.impulse = Vec3::new(0.0, jump_force.0, 0.0);
+
+                    double_jump.0 = true;
+                } else {
+                    if double_jump.0 {
+                        velocity.linvel = Vec3::ZERO;
+                        ext_impulse.impulse = Vec3::new(0.0, jump_force.0, 0.0);
+                    }
+
+                    double_jump.0 = false;
+                }
+            }
         }
     }
 }
+

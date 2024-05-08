@@ -3,6 +3,9 @@ use bevy_rapier3d::prelude::*;
 
 pub struct EnvironmentPlugin;
 
+#[derive(Component)]
+pub struct Ground;
+
 impl Plugin for EnvironmentPlugin {
     fn build(&self, app: &mut App) {
         app
@@ -49,6 +52,7 @@ fn spawn_floor(
 
     commands.spawn((
         Name::new("floor"),
+        Ground,
         PbrBundle {
             mesh: meshes.add(Plane3d::default().mesh().size(15.0, 15.0)),
             material: material,
