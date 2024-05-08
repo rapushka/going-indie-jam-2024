@@ -54,40 +54,24 @@ pub fn read_movement(
 pub fn move_player(
     time: Res<Time>,
     mut players: Query<(&mut Transform, &MovementSpeed, &MoveDirection), With<Player>>,
-    animations: Res<Animations>,
-    mut animators: Query<&mut AnimationPlayer>,
 ) {
     let scaled_speed = constants::PLAYER_MOVEMENT_SPEED * time.delta_seconds();
 
     for (mut player_transform, player_speed, direction) in players.iter_mut() {
         let movement = direction.0 * player_speed.0 * scaled_speed;
         player_transform.translation += movement;
+    }
+}
 
-        // rotate player to moving direction
+pub fn rotate_to_moving_direction(
+    mut players: Query<(&mut Transform, &MoveDirection), With<Player>>,
+) {
+    for (mut player_transform, direction) in players.iter_mut() {
         let is_moving = direction.0.length_squared() > 0.0;
         if is_moving {
             player_transform.look_to(-direction.0, Vec3::Y);
         }
-
-        // animation
-        for mut animator in &mut animators {
-            let key = if is_moving { &RUN } else { &IDLE };
-
-            play_animation(&animations, &mut animator, &key);
-        }
     }
-}
-
-fn play_animation(
-    animations: &Res<Animations>,
-    animator: &mut Mut<AnimationPlayer>,
-    key: &i32,
-) {
-    animator.play_with_transition(
-        animations.0[key].clone_weak(),
-        Duration::from_millis(250), // TODO: huh?
-    )
-        .repeat();
 }
 
 pub fn do_jump(

@@ -1,7 +1,9 @@
 use std::collections::HashMap;
+use std::time::Duration;
 use bevy::prelude::*;
 use crate::Order;
-use crate::player::Player;
+use crate::player::*;
+use crate::player::movement::*;
 
 // Keys
 pub const IDLE: i32 = 0;
@@ -24,7 +26,8 @@ impl Plugin for AnimationsPlugin {
 
             .add_systems(Update, (
                 idle_player_on_spawned,
-            ))
+                play_run_animation,
+            ).in_set(Order::View))
         ;
     }
 }
@@ -51,5 +54,24 @@ fn idle_player_on_spawned(
 ) {
     for mut animator in &mut animators {
         animator.play(animations.0[&IDLE].clone_weak()).repeat();
+    }
+}
+
+fn play_run_animation(
+    animations: Res<Animations>,
+    mut animators: Query<&mut AnimationPlayer>,
+    mut players: Query<&MoveDirection, With<Player>>,
+) {
+    for direction in players.iter() {
+        for mut animator in &mut animators {
+            let is_moving = direction.0.length_squared() > 0.0;
+            let key = if is_moving { &RUN } else { &IDLE };
+
+            animator.play_with_transition(
+                animations.0[&key].clone_weak(),
+                Duration::from_millis(250), // TODO: huh?
+            )
+                .repeat();
+        }
     }
 }

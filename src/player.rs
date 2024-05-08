@@ -5,7 +5,7 @@ use bevy_third_person_camera::*;
 use crate::{constants, Order};
 use crate::player::movement::*;
 
-mod movement;
+pub mod movement;
 
 pub struct PlayerPlugin;
 
@@ -26,6 +26,10 @@ impl Plugin for PlayerPlugin {
                 move_player,
                 do_jump,
             ).in_set(Order::GameLogic))
+
+            .add_systems(Update, (
+                rotate_to_moving_direction,
+            ).in_set(Order::View))
         ;
     }
 }
