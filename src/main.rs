@@ -2,6 +2,7 @@ use bevy::prelude::*;
 use bevy_third_person_camera::*;
 use bevy_inspector_egui::quick::*;
 use bevy_rapier3d::prelude::*;
+use crate::animations::*;
 
 use crate::camera::*;
 use crate::environment::EnvironmentPlugin;
@@ -11,6 +12,7 @@ mod player;
 mod camera;
 mod environment;
 mod constants;
+mod animations;
 
 fn main() {
     App::new()
@@ -23,6 +25,7 @@ fn main() {
             PlayerPlugin,
             CameraPlugin,
             EnvironmentPlugin,
+            AnimationsPlugin,
         ))
 
         .run();
