@@ -10,12 +10,10 @@ impl Plugin for SpawnPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_event::<SpawnPlayer>()
-            .add_event::<Kill>()
-            .add_event::<Died>()
 
             .add_systems(OnEnter(AppState::Gameplay), (
                 load_spawn_points,
-                spawn_play_on_first_spawn_point,
+                spawn_player_on_first_spawn_point,
             )
                 .chain()
                 .in_set(Order::GameLogic))
@@ -30,12 +28,6 @@ pub struct SpawnPoint(u8);
 pub struct SpawnPlayer {
     pub position: Vec3,
 }
-
-#[derive(Event)]
-pub struct Kill(Entity);
-
-#[derive(Event)]
-pub struct Died(Entity);
 
 #[derive(Resource)]
 pub struct SpawnPointsMap(pub HashMap<u8, Entity>);
@@ -68,14 +60,14 @@ fn new_spawn_point(
     )).id());
 }
 
-fn spawn_play_on_first_spawn_point(
+fn spawn_player_on_first_spawn_point(
     spawn_points: Res<SpawnPointsMap>,
     positions: Query<&Transform, With<SpawnPoint>>,
     mut spawn_player_event: EventWriter<SpawnPlayer>,
 ) {
     if let Ok(point) = positions.get(spawn_points.get(0)) {
         spawn_player_event.send(SpawnPlayer { position: point.translation });
-    } else {  
+    } else {
         error!("something wrong with the spawn point");
-    } 
+    }
 }

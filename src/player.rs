@@ -4,11 +4,13 @@ use bevy_third_person_camera::*;
 use spawn::SpawnPlayer;
 
 use crate::*;
+use crate::player::despawn::DespawnPlugin;
 use crate::player::movement::*;
 use crate::player::spawn::SpawnPlugin;
 
 pub mod movement;
 pub mod spawn;
+pub mod despawn;
 
 pub struct PlayerPlugin;
 
@@ -19,6 +21,7 @@ impl Plugin for PlayerPlugin {
 
             .add_plugins((
                 SpawnPlugin,
+                DespawnPlugin,
             ))
 
             .add_systems(Startup, spawn_new_player)
