@@ -2,27 +2,43 @@ use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use bevy_third_person_camera::*;
 
-use crate::constants;
+use crate::{constants, Order};
 use crate::player::movement::*;
 
-mod movement;
+pub mod movement;
 
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app
+            .add_event::<Jump>()
+
             .add_systems(Startup, spawn_player)
+
+            .add_systems(Update, (
+                read_movement,
+                read_jump_input,
+            ).in_set(Order::Input))
+
+            .add_systems(Update, (
+                update_grounded,
+            ).in_set(Order::Physics))
+
             .add_systems(Update, (
                 move_player,
                 do_jump,
-            ))
+            ).in_set(Order::GameLogic))
+
+            .add_systems(Update, (
+                rotate_to_moving_direction,
+            ).in_set(Order::View))
         ;
     }
 }
 
 #[derive(Component)]
-struct Player;
+pub struct Player;
 
 fn spawn_player(
     mut commands: Commands,
@@ -42,6 +58,7 @@ fn spawn_player(
             ..default()
         },
         SecondJumpLeft(true),
+        IsGrounded(false),
 
         // physics
         KinematicCharacterController::default(),
@@ -53,5 +70,6 @@ fn spawn_player(
         ExternalImpulse::default(),
     ))
         .insert(LockedAxes::ROTATION_LOCKED)
+        .insert(MoveDirection(Vec3::ZERO))
     ;
 }

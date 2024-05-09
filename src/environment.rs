@@ -55,7 +55,7 @@ fn spawn_floor(
         Ground,
         PbrBundle {
             mesh: meshes.add(Plane3d::default().mesh().size(15.0, 15.0)),
-            material: material,
+            material: material.clone(),
             ..default()
         },
         // Physics
@@ -63,6 +63,23 @@ fn spawn_floor(
             Vec3::new(0.0, -0.1, 0.0),
             Quat::IDENTITY,
             Collider::cuboid(7.5, 0.1, 7.5)
+        )]),
+    ));
+
+    commands.spawn((
+        Name::new("platform"),
+        Ground,
+        PbrBundle {
+            mesh: meshes.add(Plane3d::default().mesh().size(2.5, 2.5)),
+            material: material.clone(),
+            transform: Transform::from_xyz(5.0, 2.0, 5.0),
+            ..default()
+        },
+        // Physics
+        Collider::compound(vec![(
+            Vec3::new(0.0, -2.0, 0.0),
+            Quat::IDENTITY,
+            Collider::cuboid(1.25, 2.0, 1.25)
         )]),
     ));
 }
