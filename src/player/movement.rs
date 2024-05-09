@@ -23,7 +23,7 @@ pub struct MoveDirection(pub Vec3);
 #[derive(Event)]
 pub struct Jump(pub Entity);
 
-pub fn read_movement(
+pub fn input_movement(
     input: Res<ButtonInput<KeyCode>>,
     mut players: Query<&mut MoveDirection, With<Player>>,
     cameras: Query<&Transform, (With<Camera3d>, Without<Player>)>,
@@ -74,7 +74,7 @@ pub fn rotate_to_moving_direction(
     }
 }
 
-pub fn read_jump_input(
+pub fn input_jump(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut players: Query<(Entity, &IsGrounded, &mut SecondJumpLeft), With<Player>>,
     mut jump_event: EventWriter<Jump>,
