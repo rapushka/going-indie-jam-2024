@@ -40,6 +40,7 @@ pub enum GameState {
 fn main() {
     App::new()
         .configure_sets(Update, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
+        .configure_sets(PostUpdate, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
         .init_state::<AppState>()
         .init_state::<GameState>()
 

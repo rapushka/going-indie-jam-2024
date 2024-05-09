@@ -9,30 +9,36 @@ pub struct DespawnPlugin;
 impl Plugin for DespawnPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_event::<Kill>()
-            .add_event::<Died>()
+            .add_event::<PlayerKilled>()
 
             .add_systems(Update, (
                 kill_player_with_too_low_position,
             )
                 .in_set(Order::GameLogic)
                 .run_if(in_state(AppState::Gameplay)))
+
         ;
     }
 }
 
 #[derive(Event)]
-pub struct Kill(Entity);
+pub struct PlayerKilled {
+    pub chunk_index: u8,
+}
 
-#[derive(Event)]
-pub struct Died(Entity);
+impl PlayerKilled {
+    pub fn out_of_bounce() -> Self { PlayerKilled { chunk_index: 0 } }
+}
 
 fn kill_player_with_too_low_position(
+    mut commands: Commands,
     players: Query<(Entity, &Transform), With<Player>>,
+    mut kill_event: EventWriter<PlayerKilled>,
 ) {
     for (player, transform) in players.iter() {
         if transform.translation.y <= DESPAWN_HEIGHT {
-            info!("despawn player");
+            kill_event.send(PlayerKilled::out_of_bounce());
+            commands.entity(player).despawn_recursive();
         }
     }
 }
