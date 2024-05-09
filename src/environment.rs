@@ -1,10 +1,12 @@
 use bevy::prelude::*;
+use bevy::render::primitives::Aabb;
 use bevy_rapier3d::prelude::*;
+use crate::AppState;
+use crate::environment::bounds::BoundsPlugin;
+
+mod bounds;
 
 pub struct EnvironmentPlugin;
-
-#[derive(Component)]
-pub struct Ground;
 
 impl Plugin for EnvironmentPlugin {
     fn build(&self, app: &mut App) {
@@ -16,13 +18,20 @@ impl Plugin for EnvironmentPlugin {
 
             .insert_resource(ClearColor(Color::hex("80aaa7").unwrap()))
 
-            .add_systems(Startup, (
+            .add_plugins((
+                BoundsPlugin,
+            ))
+
+            .add_systems(OnEnter(AppState::Loading), (
                 spawn_floor,
                 spawn_light,
             ))
         ;
     }
 }
+
+#[derive(Component)]
+pub struct Ground;
 
 fn spawn_light(
     mut commands: Commands,
