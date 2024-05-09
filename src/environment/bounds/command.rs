@@ -12,6 +12,8 @@ pub struct SpawnChunkCommand {
 
 impl Command for SpawnChunkCommand {
     fn apply(self, world: &mut World) {
+        let half_size = self.size * 0.5;
+
         let mesh = world.resource_mut::<Assets<Mesh>>().add(Cuboid::from_size(self.size));
         let material = world.resource_mut::<Assets<StandardMaterial>>().add(self.color);
 
@@ -24,7 +26,7 @@ impl Command for SpawnChunkCommand {
                 transform: Transform::from_translation(self.position),
                 ..default()
             },
-            Aabb { center: self.position.into(), half_extents: self.size.into() },
+            Aabb { center: self.position.into(), half_extents: half_size.into() },
         ));
     }
 }

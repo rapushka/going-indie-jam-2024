@@ -17,6 +17,7 @@ impl Plugin for DespawnPlugin {
             .add_event::<PlayerDead>()
 
             .add_systems(Update, (
+                player_suicide,
                 kill_player_with_too_low_position,
                 handle_player_death,
             ).chain()
@@ -37,6 +38,18 @@ pub struct PlayerDead {
 
 impl PlayerDead {
     pub fn out_of_bounce() -> Self { PlayerDead { chunk_index: 0 } }
+}
+
+fn player_suicide(
+    input: Res<ButtonInput<KeyCode>>,
+    players: Query<Entity, With<Player>>,
+    mut kill_player_event: EventWriter<KillPlayer>,
+) {
+    for (player) in players.iter() {
+        if input.just_pressed(KeyCode::KeyL) {
+            kill_player_event.send(KillPlayer(player));
+        }
+    }
 }
 
 fn kill_player_with_too_low_position(
