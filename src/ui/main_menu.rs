@@ -26,6 +26,9 @@ impl Plugin for MainMenuPlugin {
                 on_play_button_clicked,
             ).run_if(in_state(AppState::MainMenu)))
 
+            .add_systems(OnExit(AppState::MainMenu), (
+                destroy_main_menu,
+            ))
         ;
     }
 }
@@ -47,6 +50,15 @@ pub fn build_main_menu(
             create::button(&asset_server, parent, "Play", PlayButton {});
             create::button(&asset_server, parent, "Quit", QuitButton {});
         });
+}
+
+pub fn destroy_main_menu(
+    main_menus: Query<Entity, With<MainMenu>>,
+    mut commands: Commands,
+) {
+    for main_menu in main_menus.iter() {
+        commands.entity(main_menu).despawn_recursive();
+    }
 }
 
 pub fn on_play_button_clicked(

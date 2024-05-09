@@ -1,8 +1,10 @@
 use bevy::prelude::*;
 pub use main_menu::*;
 use crate::constants;
+use crate::ui::gameplay_hud::GameplayHudPlugin;
 
 mod main_menu;
+mod gameplay_hud;
 mod create;
 
 pub mod order {
@@ -25,6 +27,7 @@ impl Plugin for UiPlugin {
             
             .add_plugins((
                 MainMenuPlugin,
+                GameplayHudPlugin,
             ))
 
             .add_systems(Update, (
