@@ -1,10 +1,9 @@
-use bevy::input::keyboard::KeyboardInput;
 use bevy::prelude::*;
 use bevy::window::{CursorGrabMode, PrimaryWindow};
 use bevy_third_person_camera::*;
 use bevy_third_person_camera::camera::*;
-use crate::{AppState, constants, GameState};
-use crate::constants::*;
+
+use crate::{AppState, GameState};
 
 pub struct CameraPlugin;
 
