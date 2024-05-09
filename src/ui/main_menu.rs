@@ -46,7 +46,7 @@ pub fn build_main_menu(
         },
     ))
         .with_children(|parent| {
-            create::title(&asset_server, parent);
+            create::title(&asset_server, parent, "FINAL Final Version 2.1.0");
             create::button(&asset_server, parent, "Play", PlayButton {});
             create::button(&asset_server, parent, "Quit", QuitButton {});
         });

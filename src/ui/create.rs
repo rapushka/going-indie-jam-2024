@@ -4,10 +4,14 @@ use bevy::hierarchy::ChildBuilder;
 use bevy::core::Name;
 use crate::constants;
 
-pub fn title(asset_server: &Res<AssetServer>, parent: &mut ChildBuilder) {
+pub fn title(
+    asset_server: &Res<AssetServer>,
+    parent: &mut ChildBuilder,
+    title_text: &str,
+) {
     parent.spawn(NodeBundle { style: constants::styles::TITLE, ..default() })
         .with_children(|parent| {
-            text(asset_server, "FINAL Final Version 2.1.0", parent, 64.0);
+            text(asset_server, title_text, parent, 64.0);
         });
 }
 

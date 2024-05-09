@@ -12,6 +12,7 @@ pub mod order {
 
     pub const LOADING_CURTAIN: ZIndex = ZIndex::Global(1_000);
     pub const MAIN_MENU: ZIndex = ZIndex::Global(100);
+    pub const PAUSE_MENU: ZIndex = ZIndex::Global(200);
     pub const GAMEPLAY_HUD: ZIndex = ZIndex::Global(10);
 }
 
@@ -24,7 +25,7 @@ impl Plugin for UiPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_event::<Clicked>()
-            
+
             .add_plugins((
                 MainMenuPlugin,
                 GameplayHudPlugin,
