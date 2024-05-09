@@ -22,7 +22,7 @@ impl Plugin for EnvironmentPlugin {
                 BoundsPlugin,
             ))
 
-            .add_systems(OnEnter(AppState::Loading), (
+            .add_systems(OnEnter(AppState::Gameplay), (
                 spawn_floor,
                 spawn_light,
             ))

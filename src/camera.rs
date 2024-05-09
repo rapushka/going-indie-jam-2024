@@ -1,13 +1,16 @@
 use bevy::prelude::*;
 use bevy_third_person_camera::*;
 use bevy_third_person_camera::camera::*;
+use crate::AppState;
 
 pub struct CameraPlugin;
 
 impl Plugin for CameraPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_systems(Startup, spawn_camera)
+            .add_systems(Startup, spawn_camera) // TODO: remove this one
+
+            // .add_systems(OnEnter(AppState::Gameplay), spawn_camera)
         ;
     }
 }
@@ -17,6 +20,7 @@ fn spawn_camera(
 ) {
     commands.spawn((
         ThirdPersonCamera {
+            cursor_lock_active: false,
             cursor_lock_key: KeyCode::Escape,
             mouse_sensitivity: 5.0,
             zoom: Zoom::new(3.0, 10.0),

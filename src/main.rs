@@ -70,7 +70,7 @@ fn start_game(
     mut next_app_state: ResMut<NextState<AppState>>,
     mut next_game_state: ResMut<NextState<GameState>>,
 ) {
-    next_app_state.set(AppState::Gameplay);
-    next_game_state.set(GameState::Playing);
+    // next_app_state.set(AppState::Gameplay);
+    // next_game_state.set(GameState::Playing);
 }
 

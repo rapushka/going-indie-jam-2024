@@ -27,8 +27,6 @@ impl Plugin for PlayerPlugin {
                 DespawnPlugin,
             ))
 
-            .add_systems(Startup, spawn_new_player)
-
             .add_systems(Update, (
                 input_movement,
                 input_jump,
@@ -39,13 +37,7 @@ impl Plugin for PlayerPlugin {
             ).in_set(Order::Physics))
 
             .add_systems(Update, (
-                spawn_new_player,
-            )
-                .in_set(Order::GameLogic)
-                .run_if(on_event::<SpawnPlayer>()),
-            )
-
-            .add_systems(Update, (
+                spawn_new_player.run_if(on_event::<SpawnPlayer>()),
                 move_player,
                 do_jump,
             )
