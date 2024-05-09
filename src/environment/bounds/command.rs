@@ -12,23 +12,15 @@ pub struct SpawnChunk {
 
 impl Command for SpawnChunk {
     fn apply(self, world: &mut World) {
-        let mesh;
-        {
-            let mut meshes = world.get_resource_mut::<Assets<Mesh>>().unwrap();
-            mesh = meshes.add(Cuboid::from_size(self.size));
-        }
-        let material;
-        {
-            let mut materials = world.get_resource_mut::<Assets<StandardMaterial>>().unwrap();
+        let mesh = world.resource_mut::<Assets<Mesh>>().add(Cuboid::from_size(self.size));
+        let material = world.resource_mut::<Assets<StandardMaterial>>().add(self.color);
 
-            material = materials.add(self.color);
-        }
         world.spawn((
             Name::new(format!("bounds {}", self.chunk_index)),
             Chunk(self.chunk_index),
             PbrBundle {
                 mesh,
-                material: material.clone(),
+                material,
                 transform: Transform::from_translation(self.position),
                 ..default()
             },
