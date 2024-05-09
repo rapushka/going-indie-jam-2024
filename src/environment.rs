@@ -4,7 +4,7 @@ use bevy_rapier3d::prelude::*;
 use crate::AppState;
 use crate::environment::bounds::BoundsPlugin;
 
-mod bounds;
+pub mod bounds;
 
 pub struct EnvironmentPlugin;
 

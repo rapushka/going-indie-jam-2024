@@ -16,7 +16,7 @@ impl Command for SpawnChunkCommand {
         let material = world.resource_mut::<Assets<StandardMaterial>>().add(self.color);
 
         world.spawn((
-            Name::new(format!("bounds {}", self.chunk_index)),
+            Name::new(format!("chunk {}", self.chunk_index)),
             Chunk(self.chunk_index),
             PbrBundle {
                 mesh,
