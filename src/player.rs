@@ -94,6 +94,7 @@ fn spawn_new_player(
         ))
             .insert(LockedAxes::ROTATION_LOCKED)
             .insert(MoveDirection(Vec3::ZERO))
+            .insert(OnAppState(AppState::Gameplay))
         ;
     }
 }
