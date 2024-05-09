@@ -6,10 +6,12 @@ use spawn::SpawnPlayer;
 use crate::*;
 use crate::player::despawn::DespawnPlugin;
 use crate::player::movement::*;
+use crate::player::respawn::RespawnPlugin;
 use crate::player::spawn::SpawnPlugin;
 
 pub mod movement;
 pub mod spawn;
+pub mod respawn;
 pub mod despawn;
 
 pub struct PlayerPlugin;
@@ -21,6 +23,7 @@ impl Plugin for PlayerPlugin {
 
             .add_plugins((
                 SpawnPlugin,
+                RespawnPlugin,
                 DespawnPlugin,
             ))
 
