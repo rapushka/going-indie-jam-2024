@@ -37,7 +37,12 @@ impl Plugin for PlayerPlugin {
             ).in_set(Order::Physics))
 
             .add_systems(Update, (
-                spawn_new_player.run_if(on_event::<SpawnPlayer>()),
+                spawn_new_player,
+            )
+                .in_set(Order::GameLogic)
+                .run_if(on_event::<SpawnPlayer>()))
+
+            .add_systems(Update, (
                 move_player,
                 do_jump,
             )
