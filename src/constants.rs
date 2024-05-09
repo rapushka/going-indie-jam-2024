@@ -1,4 +1,12 @@
+use bevy::prelude::KeyCode;
+
 pub const PLAYER_MOVEMENT_SPEED: f32 = 3.5;
+
+pub mod controls {
+    use bevy::prelude::KeyCode;
+
+    pub const PAUSE_KEY: KeyCode = KeyCode::Escape;
+}
 
 pub mod color {
     use bevy::prelude::*;
@@ -60,3 +68,4 @@ pub mod styles {
         style
     };
 }
+
