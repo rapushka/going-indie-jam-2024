@@ -30,7 +30,9 @@ impl Plugin for PlayerPlugin {
             .add_systems(Update, (
                 input_movement,
                 input_jump,
-            ).in_set(Order::Input))
+            )
+                .run_if(in_state(GameState::Playing))
+                .in_set(Order::Input))
 
             .add_systems(Update, (
                 update_grounded,
