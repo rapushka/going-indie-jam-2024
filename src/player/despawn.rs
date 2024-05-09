@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use crate::{AppState, Order};
 use crate::player::Player;
 
-const DESPAWN_HEIGHT: f32 = -100.0;
+const DESPAWN_HEIGHT: f32 = -10.0;
 
 pub struct DespawnPlugin;
 
