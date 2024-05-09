@@ -1,8 +1,9 @@
 use std::collections::HashMap;
 use std::time::Duration;
 use bevy::prelude::*;
+use bevy::utils::info;
 use bevy_rapier3d::dynamics::{ExternalImpulse, Velocity};
-use crate::Order;
+use crate::{animations, Order};
 use crate::player::*;
 use crate::player::movement::*;
 
@@ -30,7 +31,8 @@ impl Plugin for AnimationsPlugin {
                 play_run_animation,
                 play_airborn_animation,
                 play_jump_animation,
-            ).in_set(Order::View))
+            )
+                .in_set(Order::View))
         ;
     }
 }
@@ -93,9 +95,8 @@ fn play_airborn_animation(
             if is_grounded.0 {
                 continue;
             }
-            let is_playing_jump_start = animator.is_playing_clip(&animations.0[&JUMP].clone_weak());
 
-            if is_playing_jump_start {
+            if animator.is_playing_clip(&animations.0[&JUMP].clone_weak()) {
                 continue;
             }
 
@@ -115,7 +116,7 @@ pub fn play_jump_animation(
 ) {
     for _e in jump_event.read() {
         for mut animator in &mut animators {
-            animator.play_with_transition(
+            animator.start_with_transition(
                 animations.0[&JUMP].clone_weak(),
                 Duration::from_millis(250), // TODO: huh?
             );
