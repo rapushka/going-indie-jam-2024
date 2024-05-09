@@ -13,17 +13,22 @@ pub struct DespawnPlugin;
 impl Plugin for DespawnPlugin {
     fn build(&self, app: &mut App) {
         app
+            .add_event::<KillPlayer>()
             .add_event::<PlayerDead>()
 
             .add_systems(Update, (
                 kill_player_with_too_low_position,
-            )
+                handle_player_death,
+            ).chain()
                 .in_set(Order::GameLogic)
                 .run_if(in_state(AppState::Gameplay)))
 
         ;
     }
 }
+
+#[derive(Event)]
+pub struct KillPlayer(Entity);
 
 #[derive(Event)]
 pub struct PlayerDead {
@@ -35,13 +40,25 @@ impl PlayerDead {
 }
 
 fn kill_player_with_too_low_position(
+    players: Query<(Entity, &Transform), With<Player>>,
+    mut kill_player_event: EventWriter<KillPlayer>,
+) {
+    for (player, transform) in players.iter() {
+        if transform.translation.y <= DESPAWN_HEIGHT {
+            kill_player_event.send(KillPlayer(player));
+        }
+    }
+}
+
+fn handle_player_death(
     mut commands: Commands,
+    mut kill_player_event: EventReader<KillPlayer>,
     players: Query<(Entity, &Transform), With<Player>>,
     chunks: Query<(&Chunk, &Aabb)>,
     mut death_event: EventWriter<PlayerDead>,
 ) {
-    for (player, transform) in players.iter() {
-        if transform.translation.y <= DESPAWN_HEIGHT {
+    for e in kill_player_event.read() {
+        if let Ok((player, transform)) = players.get(e.0) {
             let mut chunk_index = 0;
             for (chunk, bounds) in chunks.iter() {
                 if bounds.contains(transform.translation) {
