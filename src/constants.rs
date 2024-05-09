@@ -8,8 +8,6 @@ pub mod color {
     pub const PRESSED_BUTTON: Color = Color::rgb(0.89, 0.58, 0.28);
 
     pub const DEFAULT_TEXT: Color = Color::rgb(0.30, 0.25, 0.22);
-    // #e3c25b light yellow = Color::rgb(0.89, 0.76, 0.36);
-    // #ca5954 red = Color::rgb(0.79, 0.35, 0.33);
 }
 
 pub mod styles {

@@ -1,6 +1,7 @@
+use bevy::app::AppExit;
 use bevy::prelude::*;
 use crate::{AppState, constants, ui};
-use crate::ui::create;
+use crate::ui::{Clicked, create};
 
 pub struct MainMenuPlugin;
 
@@ -19,6 +20,12 @@ impl Plugin for MainMenuPlugin {
             .add_systems(OnEnter(AppState::MainMenu), (
                 build_main_menu,
             ))
+
+            .add_systems(Update, (
+                on_quit_button_clicked,
+                on_play_button_clicked,
+            ).run_if(in_state(AppState::MainMenu)))
+
         ;
     }
 }
@@ -40,4 +47,28 @@ pub fn build_main_menu(
             create::button(&asset_server, parent, "Play", PlayButton {});
             create::button(&asset_server, parent, "Quit", QuitButton {});
         });
+}
+
+pub fn on_play_button_clicked(
+    buttons: Query<Entity, With<PlayButton>>,
+    mut event_reader: EventReader<Clicked>,
+    mut next_state: ResMut<NextState<AppState>>,
+) {
+    for event in event_reader.read() {
+        if let Ok(_) = buttons.get(event.0) {
+            next_state.set(AppState::Gameplay);
+        }
+    }
+}
+
+pub fn on_quit_button_clicked(
+    buttons: Query<Entity, With<QuitButton>>,
+    mut event_reader: EventReader<Clicked>,
+    mut app_exit_event: EventWriter<AppExit>,
+) {
+    for event in event_reader.read() {
+        if let Ok(_) = buttons.get(event.0) {
+            app_exit_event.send(AppExit);
+        }
+    }
 }
