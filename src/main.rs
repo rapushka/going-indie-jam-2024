@@ -7,12 +7,14 @@ use crate::animations::*;
 use crate::camera::*;
 use crate::environment::EnvironmentPlugin;
 use crate::player::*;
+use crate::ui::UiPlugin;
 
 mod player;
 mod camera;
 mod environment;
 mod constants;
 mod animations;
+mod ui;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub enum Order {
@@ -26,6 +28,7 @@ pub enum Order {
 pub enum AppState {
     #[default]
     Loading,
+    MainMenu,
     Gameplay,
 }
 
@@ -57,6 +60,7 @@ fn main() {
             PlayerPlugin,
             EnvironmentPlugin,
             AnimationsPlugin,
+            UiPlugin,
         ))
 
         .add_systems(OnEnter(AppState::Loading), (
@@ -68,9 +72,7 @@ fn main() {
 
 fn start_game(
     mut next_app_state: ResMut<NextState<AppState>>,
-    mut next_game_state: ResMut<NextState<GameState>>,
 ) {
-    // next_app_state.set(AppState::Gameplay);
-    // next_game_state.set(GameState::Playing);
+    next_app_state.set(AppState::MainMenu);
 }
 
