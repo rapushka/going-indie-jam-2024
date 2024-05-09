@@ -27,12 +27,12 @@ impl Plugin for PlayerPlugin {
                 DespawnPlugin,
             ))
 
-            .add_systems(Startup, spawn_new_player)
-
             .add_systems(Update, (
                 input_movement,
                 input_jump,
-            ).in_set(Order::Input))
+            )
+                .run_if(in_state(GameState::Playing))
+                .in_set(Order::Input))
 
             .add_systems(Update, (
                 update_grounded,
@@ -42,8 +42,7 @@ impl Plugin for PlayerPlugin {
                 spawn_new_player,
             )
                 .in_set(Order::GameLogic)
-                .run_if(on_event::<SpawnPlayer>()),
-            )
+                .run_if(on_event::<SpawnPlayer>()))
 
             .add_systems(Update, (
                 move_player,
@@ -95,6 +94,7 @@ fn spawn_new_player(
         ))
             .insert(LockedAxes::ROTATION_LOCKED)
             .insert(MoveDirection(Vec3::ZERO))
+            .insert(OnAppState(AppState::Gameplay))
         ;
     }
 }

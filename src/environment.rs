@@ -1,7 +1,7 @@
 use bevy::prelude::*;
-use bevy::render::primitives::Aabb;
 use bevy_rapier3d::prelude::*;
-use crate::AppState;
+
+use crate::{AppState, OnAppState};
 use crate::environment::bounds::BoundsPlugin;
 
 pub mod bounds;
@@ -22,7 +22,7 @@ impl Plugin for EnvironmentPlugin {
                 BoundsPlugin,
             ))
 
-            .add_systems(OnEnter(AppState::Loading), (
+            .add_systems(OnEnter(AppState::Gameplay), (
                 spawn_floor,
                 spawn_light,
             ))
@@ -46,6 +46,7 @@ fn spawn_light(
             transform: Transform::from_xyz(0.0, 5.0, 0.0),
             ..default()
         },
+        OnAppState(AppState::Gameplay),
     ));
 }
 
@@ -67,6 +68,8 @@ fn spawn_floor(
             material: material.clone(),
             ..default()
         },
+        OnAppState(AppState::Gameplay),
+
         // Physics
         Collider::compound(vec![(
             Vec3::new(0.0, -0.1, 0.0),
@@ -84,6 +87,8 @@ fn spawn_floor(
             transform: Transform::from_xyz(5.0, 2.0, 5.0),
             ..default()
         },
+        OnAppState(AppState::Gameplay),
+
         // Physics
         Collider::compound(vec![(
             Vec3::new(0.0, -2.0, 0.0),

@@ -1,13 +1,23 @@
 use bevy::prelude::*;
+use bevy::window::{CursorGrabMode, PrimaryWindow};
 use bevy_third_person_camera::*;
 use bevy_third_person_camera::camera::*;
+
+use crate::{AppState, GameState};
 
 pub struct CameraPlugin;
 
 impl Plugin for CameraPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_systems(Startup, spawn_camera)
+            .add_systems(OnEnter(AppState::Loading), spawn_camera)
+
+            .add_systems(OnEnter(AppState::Gameplay), lock_camera)
+
+            .add_systems(OnEnter(GameState::Paused), unlock_camera)
+            .add_systems(OnExit(GameState::Paused), lock_camera)
+
+            .add_systems(OnExit(AppState::Gameplay), unlock_camera)
         ;
     }
 }
@@ -17,7 +27,8 @@ fn spawn_camera(
 ) {
     commands.spawn((
         ThirdPersonCamera {
-            cursor_lock_key: KeyCode::Escape,
+            cursor_lock_toggle_enabled: false,
+            cursor_lock_active: false,
             mouse_sensitivity: 5.0,
             zoom: Zoom::new(3.0, 10.0),
             offset_enabled: true,
@@ -29,4 +40,32 @@ fn spawn_camera(
             ..default()
         },
     ));
+}
+
+fn lock_camera(
+    windows: Query<&mut Window, With<PrimaryWindow>>,
+    cameras: Query<&mut ThirdPersonCamera>,
+) {
+    set_camera_locked(cameras, windows, true);
+}
+
+fn unlock_camera(
+    cameras: Query<&mut ThirdPersonCamera>,
+    windows: Query<&mut Window, With<PrimaryWindow>>,
+) {
+    set_camera_locked(cameras, windows, false);
+}
+
+fn set_camera_locked(
+    mut cameras: Query<&mut ThirdPersonCamera>,
+    mut windows: Query<&mut Window, With<PrimaryWindow>>,
+    value: bool,
+) {
+    for mut camera in cameras.iter_mut() {
+        camera.cursor_lock_active = value;
+
+        let mut window = windows.get_single_mut().unwrap();
+        window.cursor.visible = !value;
+        window.cursor.grab_mode = if value { CursorGrabMode::Locked } else { CursorGrabMode::None };
+    }
 }

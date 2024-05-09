@@ -2,6 +2,7 @@ use bevy::ecs::system::Command;
 use bevy::prelude::*;
 use bevy::render::primitives::Aabb;
 use crate::environment::bounds::Chunk;
+use crate::{AppState, OnAppState};
 
 pub struct SpawnChunkCommand {
     pub chunk_index: u8,
@@ -26,6 +27,7 @@ impl Command for SpawnChunkCommand {
                 transform: Transform::from_translation(self.position),
                 ..default()
             },
+            OnAppState(AppState::Gameplay),
             Aabb { center: self.position.into(), half_extents: half_size.into() },
         ));
     }
