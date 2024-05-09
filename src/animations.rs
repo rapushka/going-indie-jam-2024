@@ -17,7 +17,7 @@ pub const RUN: i32 = 5;
 pub const WALK: i32 = 6;
 
 #[derive(Resource)]
-pub struct Animations(pub(crate) HashMap<i32, Handle<AnimationClip>>);
+pub struct Animations(pub HashMap<i32, Handle<AnimationClip>>);
 
 pub struct AnimationsPlugin;
 
