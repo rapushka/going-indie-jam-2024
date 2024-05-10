@@ -1,3 +1,4 @@
+use bevy::gltf::Gltf;
 use bevy::prelude::*;
 use bevy_third_person_camera::*;
 use bevy_inspector_egui::quick::*;
@@ -8,6 +9,7 @@ use crate::blender_workflow::BlenderWorkflowPlugin;
 use crate::camera::*;
 use crate::environment::EnvironmentPlugin;
 use crate::player::*;
+use crate::player::movement::{JumpForce, MovementSpeed};
 use crate::ui::UiPlugin;
 
 mod player;
@@ -71,6 +73,7 @@ fn main() {
 
         .add_systems(OnEnter(AppState::Loading), (
             start_game,
+            test_gltf_level,
         ))
 
         .add_systems(Update, (
@@ -100,3 +103,19 @@ pub fn despawn_not_in_state(
     }
 }
 
+fn test_gltf_level(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut models: Res<Assets<Gltf>>,
+) {
+    let gltf = models.add(asset_server.load("levels/level1.gltf"));
+    let gltf = models.get(gltf.id());
+    commands.spawn((
+        Name::new("level 1"),
+        SceneBundle {
+            scene: gltf.unwrap().scenes[0].clone(),
+            ..default()
+        },
+        // OnAppState(AppState::Gameplay),
+    ));
+}
