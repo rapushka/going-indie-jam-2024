@@ -1,11 +1,11 @@
-use bevy::gltf::Gltf;
 use bevy::prelude::*;
-use bevy_third_person_camera::*;
+use bevy_asset_loader::prelude::*;
 use bevy_inspector_egui::quick::*;
 use bevy_rapier3d::prelude::*;
+use bevy_third_person_camera::*;
+
 use crate::animations::*;
 use crate::blender_workflow::BlenderWorkflowPlugin;
-
 use crate::camera::*;
 use crate::environment::EnvironmentPlugin;
 use crate::player::*;
@@ -47,12 +47,24 @@ pub enum GameState {
 #[derive(Component)]
 pub struct OnAppState(pub AppState);
 
+#[derive(AssetCollection, Resource)]
+struct LevelAssets {
+    #[asset(path = "levels/level1.gltf")]
+    level: Handle<Scene>,
+}
+
 fn main() {
     App::new()
         .configure_sets(Update, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
         .configure_sets(PostUpdate, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
         .init_state::<AppState>()
         .init_state::<GameState>()
+
+        .add_loading_state(
+            LoadingState::new(AppState::Loading)
+                .continue_to_state(AppState::MainMenu)
+                .load_collection::<LevelAssets>(),
+        )
 
         .add_plugins((
             // dependencies
@@ -71,8 +83,8 @@ fn main() {
             UiPlugin,
         ))
 
-        .add_systems(OnEnter(AppState::Loading), (
-            start_game,
+        .add_systems(OnEnter(AppState::MainMenu), (
+            // start_game,
             test_gltf_level,
         ))
 
@@ -105,17 +117,42 @@ pub fn despawn_not_in_state(
 
 fn test_gltf_level(
     mut commands: Commands,
-    asset_server: Res<AssetServer>,
-    mut models: Res<Assets<Gltf>>,
+    asset_server: Res<LevelAssets>,
 ) {
-    let gltf = models.add(asset_server.load("levels/level1.gltf"));
-    let gltf = models.get(gltf.id());
     commands.spawn((
-        Name::new("level 1"),
         SceneBundle {
-            scene: gltf.unwrap().scenes[0].clone(),
+            scene: asset_server.level.clone(),
             ..default()
         },
+        Name::new("Level 1"),
         // OnAppState(AppState::Gameplay),
+    ));
+}
+
+fn start_level(
+    mut commands: Commands,
+    assets: Res<LevelAssets>,
+) {
+    commands.spawn(PointLightBundle {
+        point_light: PointLight {
+            intensity: 4000.0,
+            shadows_enabled: true,
+            ..default()
+        },
+        transform: Transform::from_xyz(4.0, 8.0, 4.0),
+        ..default()
+    });
+    commands.spawn(Camera3dBundle {
+        transform: Transform::from_xyz(-2.5, 4.5, 9.0)
+            .looking_at(Vec3::ZERO, Vec3::Y),
+        ..default()
+    });
+
+    commands.spawn((
+        SceneBundle {
+            scene: assets.level.clone(),
+            ..default()
+        },
+        Name::new("Level1"),
     ));
 }
