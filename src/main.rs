@@ -50,7 +50,7 @@ pub struct OnAppState(pub AppState);
 #[derive(AssetCollection, Resource)]
 struct LevelAssets {
     #[asset(path = "levels/level1.gltf")]
-    level: Handle<Scene>,
+    level_1: Handle<Scene>,
 }
 
 fn main() {
@@ -117,42 +117,16 @@ pub fn despawn_not_in_state(
 
 fn test_gltf_level(
     mut commands: Commands,
-    asset_server: Res<LevelAssets>,
+    level_assets: Res<LevelAssets>,
+    asset_server: Res<AssetServer>,
 ) {
     commands.spawn((
         SceneBundle {
-            scene: asset_server.level.clone(),
+            // scene: asset_server.load("levels/level1.gltf"),
+            scene: level_assets.level_1.clone(),
             ..default()
         },
         Name::new("Level 1"),
         // OnAppState(AppState::Gameplay),
-    ));
-}
-
-fn start_level(
-    mut commands: Commands,
-    assets: Res<LevelAssets>,
-) {
-    commands.spawn(PointLightBundle {
-        point_light: PointLight {
-            intensity: 4000.0,
-            shadows_enabled: true,
-            ..default()
-        },
-        transform: Transform::from_xyz(4.0, 8.0, 4.0),
-        ..default()
-    });
-    commands.spawn(Camera3dBundle {
-        transform: Transform::from_xyz(-2.5, 4.5, 9.0)
-            .looking_at(Vec3::ZERO, Vec3::Y),
-        ..default()
-    });
-
-    commands.spawn((
-        SceneBundle {
-            scene: assets.level.clone(),
-            ..default()
-        },
-        Name::new("Level1"),
     ));
 }

@@ -15,10 +15,27 @@
     ],
     "nodes" : [
         {
+            "extras" : {
+                "components_meta" : {}
+            },
             "mesh" : 0,
             "name" : "Cube_Grass_Single"
         },
         {
+            "extras" : {
+                "components_meta" : {
+                    "components" : [
+                        {
+                            "name" : "SpawnPoint",
+                            "long_name" : "going_indie_jam::player::spawn::SpawnPoint",
+                            "SpawnPoint_ui" : {
+                                "0" : 10
+                            }
+                        }
+                    ]
+                },
+                "SpawnPoint" : "(10)"
+            },
             "name" : "spawn point",
             "translation" : [
                 0,
