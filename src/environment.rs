@@ -34,6 +34,14 @@ impl Plugin for EnvironmentPlugin {
 #[reflect(Component)]
 pub struct Ground;
 
+#[derive(Component, Reflect, Default, Debug)]
+#[reflect(Component)]
+pub struct InvisibleWall; // Needed only if we want to react on collision with it
+
+#[derive(Component, Reflect, Default, Debug)]
+#[reflect(Component)]
+pub struct ExitFromLevel;
+
 fn spawn_light(
     mut commands: Commands,
 ) {
