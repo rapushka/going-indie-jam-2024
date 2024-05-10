@@ -3,6 +3,7 @@ use bevy_third_person_camera::*;
 use bevy_inspector_egui::quick::*;
 use bevy_rapier3d::prelude::*;
 use crate::animations::*;
+use crate::blender_workflow::BlenderWorkflowPlugin;
 
 use crate::camera::*;
 use crate::environment::EnvironmentPlugin;
@@ -15,6 +16,7 @@ mod environment;
 mod constants;
 mod animations;
 mod ui;
+mod blender_workflow;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub enum Order {
@@ -57,6 +59,7 @@ fn main() {
             RapierPhysicsPlugin::<NoUserData>::default(),
             RapierDebugRenderPlugin::default(),
             ThirdPersonCameraPlugin,
+            BlenderWorkflowPlugin,
 
             // game
             CameraPlugin,

@@ -21,7 +21,8 @@ impl Plugin for SpawnPlugin {
     }
 }
 
-#[derive(Component)]
+#[derive(Component, Reflect, Default, Debug)]
+#[reflect(Component)]
 pub struct SpawnPoint(u8);
 
 #[derive(Event)]

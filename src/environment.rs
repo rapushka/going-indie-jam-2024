@@ -30,7 +30,8 @@ impl Plugin for EnvironmentPlugin {
     }
 }
 
-#[derive(Component)]
+#[derive(Component, Reflect, Default, Debug)]
+#[reflect(Component)]
 pub struct Ground;
 
 fn spawn_light(

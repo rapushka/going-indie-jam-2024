@@ -8,7 +8,8 @@ mod command;
 
 const CHUNK_TRANSPARENCY: u8 = 100;
 
-#[derive(Component)]
+#[derive(Component, Reflect, Default, Debug)]
+#[reflect(Component)]
 pub struct Chunk(pub u8);
 
 pub struct BoundsPlugin;
