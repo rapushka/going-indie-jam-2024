@@ -34,7 +34,7 @@
                         }
                     ]
                 },
-                "SpawnPoint" : "(10)"
+                "SpawnPoint" : "10"
             },
             "name" : "spawn point",
             "translation" : [

@@ -49,7 +49,7 @@ pub struct OnAppState(pub AppState);
 
 #[derive(AssetCollection, Resource)]
 struct LevelAssets {
-    #[asset(path = "levels/level1.gltf")]
+    #[asset(path = "levels/level1.gltf#Scene0")]
     level_1: Handle<Scene>,
 }
 
