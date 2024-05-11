@@ -50,8 +50,8 @@ pub struct OnAppState(pub AppState);
 
 #[derive(AssetCollection, Resource)]
 struct LevelAssets {
-    #[asset(path = "levels/level1.gltf#Scene0")]
-    level_1: Handle<Scene>,
+    #[asset(paths("levels/level1.gltf#Scene0"), collection(typed))]
+    levels: Vec<Handle<Scene>>,
 }
 
 fn main() {
@@ -117,7 +117,7 @@ fn test_gltf_level(
 ) {
     commands.spawn((
         SceneBundle {
-            scene: level_assets.level_1.clone(),
+            scene: level_assets.levels[0].clone(),
             ..default()
         },
         Name::new("Level 1"),
