@@ -110,17 +110,3 @@ pub fn despawn_not_in_state(
         }
     }
 }
-
-fn test_gltf_level(
-    mut commands: Commands,
-    level_assets: Res<LevelAssets>,
-) {
-    commands.spawn((
-        SceneBundle {
-            scene: level_assets.levels[0].clone(),
-            ..default()
-        },
-        Name::new("Level 1"),
-        OnAppState(AppState::Gameplay),
-    ));
-}
