@@ -22,9 +22,15 @@
                             "long_name" : "going_indie_jam::blender_workflow::BoxCollider",
                             "BoxCollider_ui" : {
                                 "sizes" : [
-                                    2.200000047683716,
+                                    1.0,
                                     0.20000000298023224,
-                                    2.200000047683716
+                                    1.0
+                                ],
+                                "rotation" : [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
                                 ]
                             }
                         },
@@ -32,16 +38,27 @@
                             "name" : "Ground",
                             "long_name" : "going_indie_jam::environment::Ground",
                             "Ground_ui" : {}
+                        },
+                        {
+                            "name" : "Transform",
+                            "long_name" : "bevy_transform::components::transform::Transform",
+                            "Transform_ui" : {
+                                "translation" : [
+                                    0.0,
+                                    0.8999999761581421,
+                                    0.0
+                                ]
+                            }
                         }
                     ]
                 },
-                "BoxCollider" : "(offset: Vec3(x:0.0, y:0.0, z:0.0), rotation: Quat(x:0.0, y:0.0, z:0.0, w:0.0), sizes: Vec3(x:2.200000047683716, y:0.20000000298023224, z:2.200000047683716))",
+                "BoxCollider" : "(offset: Vec3(x:0.0, y:0.0, z:0.0), rotation: Quat(x:0.0, y:0.0, z:0.0, w:1.0), sizes: Vec3(x:1.0, y:0.20000000298023224, z:1.0))",
                 "Ground" : ""
             },
             "name" : "ground",
             "translation" : [
                 0,
-                0.9409652352333069,
+                0.8999999761581421,
                 0
             ]
         },
@@ -63,7 +80,7 @@
             "name" : "spawn point 0",
             "translation" : [
                 0,
-                1.0444316864013672,
+                1.100000023841858,
                 0
             ]
         },
@@ -80,14 +97,20 @@
                             "long_name" : "going_indie_jam::blender_workflow::BoxCollider",
                             "BoxCollider_ui" : {
                                 "sizes" : [
-                                    2.200000047683716,
-                                    2.0,
-                                    2.200000047683716
+                                    1.0,
+                                    1.0,
+                                    1.0
                                 ],
                                 "offset" : [
                                     0.0,
                                     -0.10000000149011612,
                                     0.0
+                                ],
+                                "rotation" : [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
                                 ]
                             }
                         },
@@ -109,7 +132,7 @@
                         }
                     ]
                 },
-                "BoxCollider" : "(offset: Vec3(x:0.0, y:-0.10000000149011612, z:0.0), rotation: Quat(x:0.0, y:0.0, z:0.0, w:0.0), sizes: Vec3(x:2.200000047683716, y:2.0, z:2.200000047683716))"
+                "BoxCollider" : "(offset: Vec3(x:0.0, y:-0.10000000149011612, z:0.0), rotation: Quat(x:0.0, y:0.0, z:0.0, w:1.0), sizes: Vec3(x:1.0, y:1.0, z:1.0))"
             },
             "mesh" : 0,
             "name" : "Cube_Grass_Single"
@@ -175,7 +198,7 @@
     ],
     "meshes" : [
         {
-            "name" : "Cube.276",
+            "name" : "mesh",
             "primitives" : [
                 {
                     "attributes" : {

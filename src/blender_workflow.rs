@@ -1,5 +1,7 @@
 use bevy::prelude::*;
+use bevy::reflect::{GetTypeRegistration, TypeRegistration};
 use bevy_gltf_components::ComponentsFromGltfPlugin;
+use bevy_inspector_egui::egui::Shape;
 use bevy_rapier3d::prelude::*;
 use bevy_registry_export::ExportRegistryPlugin;
 use crate::environment::bounds::Chunk;
