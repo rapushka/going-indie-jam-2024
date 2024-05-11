@@ -11937,6 +11937,37 @@
       "type": "object",
       "typeInfo": "Struct"
     },
+    "going_indie_jam::blender_workflow::BoxCollider": {
+      "additionalProperties": false,
+      "isComponent": true,
+      "isResource": false,
+      "properties": {
+        "offset": {
+          "type": {
+            "$ref": "#/$defs/glam::Vec3"
+          }
+        },
+        "rotation": {
+          "type": {
+            "$ref": "#/$defs/glam::Quat"
+          }
+        },
+        "sizes": {
+          "type": {
+            "$ref": "#/$defs/glam::Vec3"
+          }
+        }
+      },
+      "required": [
+        "offset",
+        "rotation",
+        "sizes"
+      ],
+      "short_name": "BoxCollider",
+      "title": "going_indie_jam::blender_workflow::BoxCollider",
+      "type": "object",
+      "typeInfo": "Struct"
+    },
     "going_indie_jam::environment::ExitFromLevel": {
       "additionalProperties": false,
       "isComponent": true,
@@ -11971,36 +12002,42 @@
       "typeInfo": "Struct"
     },
     "going_indie_jam::environment::bounds::Chunk": {
+      "additionalProperties": false,
       "isComponent": true,
       "isResource": false,
-      "items": false,
-      "prefixItems": [
-        {
+      "properties": {
+        "index": {
           "type": {
             "$ref": "#/$defs/u8"
           }
         }
+      },
+      "required": [
+        "index"
       ],
       "short_name": "Chunk",
       "title": "going_indie_jam::environment::bounds::Chunk",
-      "type": "array",
-      "typeInfo": "TupleStruct"
+      "type": "object",
+      "typeInfo": "Struct"
     },
     "going_indie_jam::player::spawn::SpawnPoint": {
+      "additionalProperties": false,
       "isComponent": true,
       "isResource": false,
-      "items": false,
-      "prefixItems": [
-        {
+      "properties": {
+        "chunk_index": {
           "type": {
             "$ref": "#/$defs/u8"
           }
         }
+      },
+      "required": [
+        "chunk_index"
       ],
       "short_name": "SpawnPoint",
       "title": "going_indie_jam::player::spawn::SpawnPoint",
-      "type": "array",
-      "typeInfo": "TupleStruct"
+      "type": "object",
+      "typeInfo": "Struct"
     },
     "i128": {
       "isComponent": false,

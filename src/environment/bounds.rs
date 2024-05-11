@@ -10,7 +10,13 @@ const CHUNK_TRANSPARENCY: u8 = 100;
 
 #[derive(Component, Reflect, Default, Debug)]
 #[reflect(Component)]
-pub struct Chunk(pub u8);
+pub struct Chunk {
+    pub index: u8,
+}
+
+impl Chunk {
+    pub fn new(index: u8) -> Self { Self { index } }
+}
 
 pub struct BoundsPlugin;
 

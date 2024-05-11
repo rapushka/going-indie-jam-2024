@@ -118,7 +118,6 @@ pub fn despawn_not_in_state(
 fn test_gltf_level(
     mut commands: Commands,
     level_assets: Res<LevelAssets>,
-    asset_server: Res<AssetServer>,
 ) {
     commands.spawn((
         SceneBundle {

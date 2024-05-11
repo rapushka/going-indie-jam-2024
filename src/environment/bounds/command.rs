@@ -20,7 +20,7 @@ impl Command for SpawnChunkCommand {
 
         world.spawn((
             Name::new(format!("chunk {}", self.chunk_index)),
-            Chunk(self.chunk_index),
+            Chunk::new(self.chunk_index),
             PbrBundle {
                 mesh,
                 material,

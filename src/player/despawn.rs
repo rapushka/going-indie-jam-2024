@@ -75,7 +75,7 @@ fn handle_player_death(
             let mut chunk_index = 0;
             for (chunk, bounds) in chunks.iter() {
                 if bounds.contains(transform.translation) {
-                    chunk_index = chunk.0;
+                    chunk_index = chunk.index;
                     break;
                 }
             }

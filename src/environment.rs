@@ -100,9 +100,9 @@ fn spawn_floor(
 
         // Physics
         Collider::compound(vec![(
-            Vec3::new(0.0, -2.0, 0.0),
+            Vec3::new(0.0, -1.0, 0.0),
             Quat::IDENTITY,
-            Collider::cuboid(1.25, 2.0, 1.25)
+            Collider::cuboid(1.25, 1.0, 1.25)
         )]),
     ));
 }

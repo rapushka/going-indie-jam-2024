@@ -23,7 +23,13 @@ impl Plugin for SpawnPlugin {
 
 #[derive(Component, Reflect, Default, Debug)]
 #[reflect(Component)]
-pub struct SpawnPoint(u8);
+pub struct SpawnPoint {
+    chunk_index: u8,
+}
+
+impl SpawnPoint {
+    pub fn new(chunk_index: u8) -> Self { Self { chunk_index } }
+}
 
 #[derive(Event)]
 pub struct SpawnPlayer {
@@ -57,7 +63,7 @@ fn new_spawn_point(
     spawn_points.insert(index, commands.spawn((
         Name::new(format!("spawn point {}", index)),
         Transform::from_translation(position),
-        SpawnPoint(index),
+        SpawnPoint::new(index),
     )).id());
 }
 
