@@ -3,6 +3,10 @@ use crate::{AppState, constants, OnAppState, ui};
 use crate::ui::create;
 use super::gameplay_hud::pause::BackToMainMenuButton;
 
+
+#[derive(Component)]
+pub struct StartLevelButton(u8);
+
 pub struct LevelSelectionPlugin;
 
 impl Plugin for LevelSelectionPlugin {
@@ -34,9 +38,9 @@ fn build_level_selection(
 
             // levels
             create::horizontal_layout(parent, |parent| {
-                create::title(&asset_server, parent, "1");
-                create::title(&asset_server, parent, "2");
-                create::title(&asset_server, parent, "3");
+                create::small_button(&asset_server, parent, "1", StartLevelButton(1));
+                create::small_button(&asset_server, parent, "2", StartLevelButton(2));
+                create::small_button(&asset_server, parent, "3", StartLevelButton(3));
             });
 
             create::button(&asset_server, parent, "Back", BackToMainMenuButton {});

@@ -67,6 +67,15 @@ pub mod styles {
         style.height = Val::Px(80.0);
         style
     };
+    
+    pub const SMALL_BUTTON: Style = {
+        let mut style = Style::DEFAULT;
+        style.justify_content = JustifyContent::Center;
+        style.align_items = AlignItems::Center;
+        style.width = Val::Px(100.0);
+        style.height = Val::Px(80.0);
+        style
+    };
 
     pub const TITLE: Style = {
         let mut style = Style::DEFAULT;

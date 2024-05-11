@@ -22,10 +22,30 @@ pub fn button<C>(
     component: C,
 )
     where C: Component {
+    button_internal(asset_server, parent, string, component, constants::styles::BUTTON);
+}
+
+pub fn small_button<C>(
+    asset_server: &Res<AssetServer>,
+    parent: &mut ChildBuilder,
+    string: &str,
+    component: C,
+)
+    where C: Component {
+    button_internal(asset_server, parent, string, component, constants::styles::SMALL_BUTTON);
+}
+
+fn button_internal<C>(
+    asset_server: &Res<AssetServer>,
+    parent: &mut ChildBuilder,
+    string: &str,
+    component: C,
+    style: Style,
+) where C: Component {
     parent.spawn((
         component,
         ButtonBundle {
-            style: constants::styles::BUTTON,
+            style,
             background_color: constants::color::DEFAULT_BUTTON.into(),
             ..default()
         },
@@ -43,6 +63,8 @@ pub fn horizontal_layout(
         NodeBundle {
             style: Style {
                 flex_direction: FlexDirection::Row,
+                column_gap: Val::Px(10.0),
+                margin: UiRect::all(Val::Px(25.0)),
                 ..default()
             },
             ..default()
