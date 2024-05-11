@@ -2,8 +2,10 @@ use bevy::prelude::*;
 pub use main_menu::*;
 use crate::constants;
 use crate::ui::gameplay_hud::GameplayHudPlugin;
+use crate::ui::level_selection::LevelSelectionPlugin;
 
 mod main_menu;
+mod level_selection;
 mod gameplay_hud;
 mod create;
 
@@ -12,6 +14,7 @@ pub mod order {
 
     pub const LOADING_CURTAIN: ZIndex = ZIndex::Global(1_000);
     pub const MAIN_MENU: ZIndex = ZIndex::Global(100);
+    pub const LEVEL_SELECTION: ZIndex = ZIndex::Global(100);
     pub const PAUSE_MENU: ZIndex = ZIndex::Global(200);
     pub const GAMEPLAY_HUD: ZIndex = ZIndex::Global(10);
 }
@@ -28,12 +31,14 @@ impl Plugin for UiPlugin {
 
             .add_plugins((
                 MainMenuPlugin,
+                LevelSelectionPlugin,
                 GameplayHudPlugin,
             ))
 
             .add_systems(Update, (
                 visualise_interaction_with_buttons,
                 click_on_pressed_button,
+                gameplay_hud::pause::on_back_button_clicked,
             ))
         ;
     }

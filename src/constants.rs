@@ -40,6 +40,16 @@ pub mod styles {
         style.row_gap = Val::Px(8.0);
         style
     };
+    pub const LEVEL_SELECTION: Style = {
+        let mut style = Style::DEFAULT;
+        style.width = Val::Percent(100.0);
+        style.height = Val::Percent(100.0);
+        style.flex_direction = FlexDirection::Column;
+        style.justify_content = JustifyContent::Center;
+        style.align_items = AlignItems::Center;
+        style.row_gap = Val::Px(8.0);
+        style
+    };
 
     pub const GAMEPLAY_HUD: Style = {
         let mut style = Style::DEFAULT;

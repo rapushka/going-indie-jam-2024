@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use crate::{AppState, GameState};
 use pause::*;
 
-mod pause;
+pub(crate) mod pause;
 
 pub struct GameplayHudPlugin;
 

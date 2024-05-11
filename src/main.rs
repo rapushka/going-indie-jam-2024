@@ -33,6 +33,7 @@ pub enum AppState {
     #[default]
     Loading,
     MainMenu,
+    LevelSelection,
     Gameplay,
 }
 
@@ -83,11 +84,6 @@ fn main() {
             UiPlugin,
         ))
 
-        .add_systems(OnEnter(AppState::MainMenu), (
-            // start_game,
-            test_gltf_level,
-        ))
-
         .add_systems(Update, (
             despawn_not_in_state,
         ))
@@ -121,11 +117,10 @@ fn test_gltf_level(
 ) {
     commands.spawn((
         SceneBundle {
-            // scene: asset_server.load("levels/level1.gltf"),
             scene: level_assets.level_1.clone(),
             ..default()
         },
         Name::new("Level 1"),
-        // OnAppState(AppState::Gameplay),
+        OnAppState(AppState::Gameplay),
     ));
 }

@@ -35,6 +35,22 @@ pub fn button<C>(
         });
 }
 
+pub fn horizontal_layout(
+    parent: &mut ChildBuilder,
+    spawn_children: impl FnOnce(&mut ChildBuilder),
+) {
+    parent.spawn((
+        NodeBundle {
+            style: Style {
+                flex_direction: FlexDirection::Row,
+                ..default()
+            },
+            ..default()
+        }
+    ))
+        .with_children(spawn_children);
+}
+
 pub fn text(
     asset_server: &Res<AssetServer>,
     text: &str,
