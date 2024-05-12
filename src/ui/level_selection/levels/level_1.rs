@@ -8,7 +8,8 @@ pub fn load(
     parent: &mut ChildBuilder,
     assets: &ResMut<MyAssets>,
 ) {
-    commons::create_ground(parent, assets, Vec3::ZERO, Vec3::new(2.0, 1.0, 2.0));
-
     commons::create_spawn_point(parent, 0, Vec3::new(0.0, 0.1, 0.0));
+    commons::create_ground(parent, assets, Vec3::ZERO, Vec3::new(3.0, 1.0, 3.0));
+
+    commons::create_ground(parent, assets, Vec3::new(4.0, 3.0, 3.0), Vec3::new(3.0, 1.0, 3.0));
 }

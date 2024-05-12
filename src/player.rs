@@ -14,6 +14,10 @@ pub mod spawn;
 pub mod respawn;
 pub mod despawn;
 
+const PLAYER_MASS: f32 = 12.5;
+const GRAVITY_SCALE: f32 = 3.0;
+const JUMP_FORCE: f32 = 150.0;
+
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
@@ -73,7 +77,7 @@ fn spawn_new_player(
             Name::new("player"),
             Player,
             MovementSpeed(constants::PLAYER_MOVEMENT_SPEED),
-            JumpForce(100.0),
+            JumpForce(JUMP_FORCE),
             ThirdPersonCameraTarget,
             SceneBundle {
                 scene: asset_server.load("models/Character.gltf#Scene0"),
@@ -87,8 +91,8 @@ fn spawn_new_player(
             KinematicCharacterController::default(),
             RigidBody::Dynamic,
             Collider::capsule(Vec3::Y, Vec3::Y * 2.0, 1.0),
-            GravityScale(2.0),
-            ColliderMassProperties::Mass(10.0),
+            GravityScale(GRAVITY_SCALE),
+            ColliderMassProperties::Mass(PLAYER_MASS),
             Velocity::default(),
             ExternalImpulse::default(),
         ))

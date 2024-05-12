@@ -44,7 +44,7 @@ fn create_grass(
         Name::new("ground"),
         Ground,
         Transform::from_translation(position),
-        create_collider(position, sizes.set_y(GRASS_HEIGHT), Vec3::ONE),
+        create_collider(position, sizes.set_y(GRASS_HEIGHT) * 0.99, Vec3::ONE),
     ));
 }
 

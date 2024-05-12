@@ -47,11 +47,12 @@ fn spawn_light(
     commands.spawn((
         PointLightBundle {
             point_light: PointLight {
-                color: Color::hex("ffe500").unwrap(),
-                intensity: 1_000_000.0,
+                color: Color::hex("e6c28c").unwrap(),
+                intensity: 30_000_000_000.0,
+                range: 50_000.0,
                 ..default()
             },
-            transform: Transform::from_xyz(0.0, 5.0, 0.0),
+            transform: Transform::from_xyz(0.0, 500.0, 0.0),
             ..default()
         },
         // OnAppState(AppState::Gameplay),
