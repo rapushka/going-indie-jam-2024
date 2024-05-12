@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
 use crate::{AppState, OnAppState};
-use crate::environment::bounds::BoundsPlugin;
+use crate::environment::bounds::{BoundsPlugin, toggle_chunks_visibility};
 
 pub mod bounds;
 
@@ -25,6 +25,8 @@ impl Plugin for EnvironmentPlugin {
             .add_systems(OnEnter(AppState::Loading), (
                 spawn_light,
             ))
+
+            .add_systems(Update, toggle_chunks_visibility.run_if(in_state(AppState::Gameplay)))
         ;
     }
 }

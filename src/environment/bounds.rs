@@ -1,7 +1,7 @@
 use bevy::ecs::system::Command;
 use bevy::prelude::*;
 
-use crate::AppState;
+use crate::{AppState, constants};
 pub use crate::environment::bounds::command::SpawnChunkCommand;
 
 mod command;
@@ -42,4 +42,18 @@ fn create_bounds(
     //     position: Vec3::new(0.0, 0.0, 10.0),
     //     size: Vec3::new(20.0, 25.0, 20.0),
     // });
+}
+
+pub fn toggle_chunks_visibility(
+    mut commands: Commands,
+    input: Res<ButtonInput<KeyCode>>,
+    chunks: Query<(Entity, &Visibility), With<Chunk>>,
+) {
+    if input.just_pressed(constants::controls::TOGGLE_DEBUG_VIEW) {
+        for (chunk, visibility) in chunks.iter()
+        {
+            let visibility = if visibility == Visibility::Visible { Visibility::Hidden } else { Visibility::Visible };
+            commands.entity(chunk).insert(visibility);
+        }
+    }
 }
