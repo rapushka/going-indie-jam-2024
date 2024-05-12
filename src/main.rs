@@ -1,5 +1,7 @@
 use bevy::prelude::*;
+use bevy::winit::WinitSettings;
 use bevy_asset_loader::prelude::*;
+use bevy_editor_pls::EditorPlugin;
 use bevy_inspector_egui::quick::*;
 use bevy_rapier3d::prelude::*;
 use bevy_third_person_camera::*;
@@ -60,28 +62,39 @@ struct LevelAssets {
     levels: Vec<Handle<Scene>>,
 }
 
+#[derive(AssetCollection, Resource)]
+struct MyAssets {
+    #[asset(path = "models/Ground.gltf#Scene0")]
+    ground: Handle<Scene>,
+}
+
 fn main() {
     App::new()
         .configure_sets(Update, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
         .configure_sets(OnEnter(AppState::Gameplay), (LevelLoadingOrder::Prepare, LevelLoadingOrder::Playing).chain())
         .configure_sets(PostUpdate, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
+
         .init_state::<AppState>()
         .init_state::<GameState>()
+
+        .insert_resource(WinitSettings::desktop_app())
 
         .add_loading_state(
             LoadingState::new(AppState::Loading)
                 .continue_to_state(AppState::MainMenu)
-                .load_collection::<LevelAssets>(),
+                .load_collection::<LevelAssets>()
+                .load_collection::<MyAssets>()
         )
 
         .add_plugins((
             // dependencies
             DefaultPlugins,
-            WorldInspectorPlugin::new(),
+            // WorldInspectorPlugin::new(),
             RapierPhysicsPlugin::<NoUserData>::default(),
             RapierDebugRenderPlugin::default(),
             ThirdPersonCameraPlugin,
             BlenderWorkflowPlugin,
+            EditorPlugin::default(),
 
             // game
             CameraPlugin,

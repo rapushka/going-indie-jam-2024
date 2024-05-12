@@ -13,6 +13,7 @@ bevy_third_person_camera = "0.1.10"
 bevy_registry_export = "0.3.1"
 bevy_gltf_components = "0.5.1"
 bevy_asset_loader = { version = "0.20.1", features = ["3d"] }
+bevy_editor_pls = "0.8.1"
 
 [profile.dev]
 opt-level = 0

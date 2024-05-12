@@ -21,8 +21,8 @@ impl Plugin for BlenderWorkflowPlugin {
             .register_type::<BoxCollider>()
 
             .add_plugins((
-                ExportRegistryPlugin::default(),
-                ComponentsFromGltfPlugin::default(),
+                // ExportRegistryPlugin::default(),
+                // ComponentsFromGltfPlugin::default(),
             ))
 
             .add_systems(Update, (
