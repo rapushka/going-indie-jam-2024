@@ -21,6 +21,7 @@ mod constants;
 mod animations;
 mod ui;
 mod blender_workflow;
+mod extensions;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub enum Order {
