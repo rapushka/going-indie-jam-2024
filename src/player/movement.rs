@@ -1,8 +1,11 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
+use log::log;
 
 use crate::constants;
+use crate::constants::GRAVITY_SCALE;
 use crate::environment::Ground;
+use crate::extensions::Vec3Extensions;
 use crate::player::Player;
 
 #[derive(Component)]
@@ -118,7 +121,6 @@ pub fn update_grounded(
         for ground in grounds.iter() {
             let has_contact = rapier_context.contact_pair(player, ground).is_some();
             if has_contact == true {
-                
                 is_grounded.0 = true;
                 double_jump.0 = true;
 
@@ -128,3 +130,33 @@ pub fn update_grounded(
     }
 }
 
+#[derive(Event)]
+pub struct Bonk(pub Entity); // Collided into a wall
+
+pub fn find_wall_colliding(
+    rapier_context: Res<RapierContext>,
+    mut players: Query<Entity, With<Player>>,
+    walls: Query<Entity, (With<Collider>, Without<Ground>)>,
+    mut bonk_event: EventWriter<Bonk>,
+) {
+    for player in players.iter_mut() {
+        for wall in walls.iter() {
+            if rapier_context.contact_pair(player, wall).is_some() {
+                bonk_event.send(Bonk(player));
+                return;
+            }
+        }
+    }
+}
+
+pub fn bonk_players(
+    mut players: Query<&mut Velocity, With<Player>>,
+    mut bonk_event: EventReader<Bonk>,
+) {
+    for e in bonk_event.read() {
+        if let Ok(mut velocity) = players.get_mut(e.0) {
+            let free_fall = -9.8;
+            velocity.linvel = (Vec3::ZERO).set_y(free_fall * 1.5);
+        }
+    }
+}

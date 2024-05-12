@@ -25,10 +25,14 @@ fn respawn_player(
     positions: Query<&Transform, With<SpawnPoint>>,
 ) {
     for e in player_dead_event.read() {
-        if let Ok(spawn_point) = positions.get(spawn_points.get(e.chunk_index)) {
-            spawn_player_event.send(SpawnPlayer { position: spawn_point.translation });
+        if let Some(spawn_point_entity) = spawn_points.get(e.chunk_index) {
+            if let Ok(spawn_point) = positions.get(*spawn_point_entity) {
+                spawn_player_event.send(SpawnPlayer { position: spawn_point.translation });
+            } else {
+                error!("spawn point {} is missing", e.chunk_index)
+            }
         } else {
-            error!("spawn point {} is missing", e.chunk_index)
+            error!("there's no point with index {}", e.chunk_index);
         }
     }
 }

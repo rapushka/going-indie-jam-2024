@@ -22,16 +22,24 @@ impl Plugin for EnvironmentPlugin {
                 BoundsPlugin,
             ))
 
-            .add_systems(OnEnter(AppState::Gameplay), (
-                spawn_floor,
+            .add_systems(OnEnter(AppState::Loading), (
                 spawn_light,
             ))
         ;
     }
 }
 
-#[derive(Component)]
+#[derive(Component, Reflect, Default, Debug)]
+#[reflect(Component)]
 pub struct Ground;
+
+#[derive(Component, Reflect, Default, Debug)]
+#[reflect(Component)]
+pub struct InvisibleWall; // Needed only if we want to react on collision with it
+
+#[derive(Component, Reflect, Default, Debug)]
+#[reflect(Component)]
+pub struct ExitFromLevel;
 
 fn spawn_light(
     mut commands: Commands,
@@ -39,14 +47,15 @@ fn spawn_light(
     commands.spawn((
         PointLightBundle {
             point_light: PointLight {
-                color: Color::hex("ffe500").unwrap(),
-                intensity: 1_000_000.0,
+                color: Color::hex("e6c28c").unwrap(),
+                intensity: 30_000_000_000.0,
+                range: 50_000.0,
                 ..default()
             },
-            transform: Transform::from_xyz(0.0, 5.0, 0.0),
+            transform: Transform::from_xyz(0.0, 500.0, 0.0),
             ..default()
         },
-        OnAppState(AppState::Gameplay),
+        // OnAppState(AppState::Gameplay),
     ));
 }
 
@@ -91,9 +100,9 @@ fn spawn_floor(
 
         // Physics
         Collider::compound(vec![(
-            Vec3::new(0.0, -2.0, 0.0),
+            Vec3::new(0.0, -1.0, 0.0),
             Quat::IDENTITY,
-            Collider::cuboid(1.25, 2.0, 1.25)
+            Collider::cuboid(1.25, 1.0, 1.25)
         )]),
     ));
 }

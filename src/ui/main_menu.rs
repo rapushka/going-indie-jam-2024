@@ -38,6 +38,7 @@ pub fn build_main_menu(
     mut commands: Commands,
 ) {
     commands.spawn((
+        Name::new("main menu page"),
         MainMenu {},
         NodeBundle {
             style: constants::styles::MAIN_MENU,
@@ -68,7 +69,7 @@ pub fn on_play_button_clicked(
 ) {
     for event in event_reader.read() {
         if let Ok(_) = buttons.get(event.0) {
-            next_state.set(AppState::Gameplay);
+            next_state.set(AppState::LevelSelection);
         }
     }
 }

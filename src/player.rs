@@ -4,6 +4,7 @@ use bevy_third_person_camera::*;
 use spawn::SpawnPlayer;
 
 use crate::*;
+use crate::constants::{GRAVITY_SCALE, JUMP_FORCE, PLAYER_MASS};
 use crate::player::despawn::DespawnPlugin;
 use crate::player::movement::*;
 use crate::player::respawn::RespawnPlugin;
@@ -20,6 +21,7 @@ impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_event::<Jump>()
+            .add_event::<Bonk>()
 
             .add_plugins((
                 SpawnPlugin,
@@ -36,6 +38,8 @@ impl Plugin for PlayerPlugin {
 
             .add_systems(Update, (
                 update_grounded,
+                find_wall_colliding,
+                bonk_players,
             ).in_set(Order::Physics))
 
             .add_systems(Update, (
@@ -73,7 +77,7 @@ fn spawn_new_player(
             Name::new("player"),
             Player,
             MovementSpeed(constants::PLAYER_MOVEMENT_SPEED),
-            JumpForce(100.0),
+            JumpForce(JUMP_FORCE),
             ThirdPersonCameraTarget,
             SceneBundle {
                 scene: asset_server.load("models/Character.gltf#Scene0"),
@@ -87,8 +91,8 @@ fn spawn_new_player(
             KinematicCharacterController::default(),
             RigidBody::Dynamic,
             Collider::capsule(Vec3::Y, Vec3::Y * 2.0, 1.0),
-            GravityScale(2.0),
-            ColliderMassProperties::Mass(10.0),
+            GravityScale(GRAVITY_SCALE),
+            ColliderMassProperties::Mass(PLAYER_MASS),
             Velocity::default(),
             ExternalImpulse::default(),
         ))

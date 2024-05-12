@@ -1,6 +1,9 @@
-use bevy::prelude::KeyCode;
+pub const PLAYER_MOVEMENT_SPEED: f32 = 3.0;
+pub const PLAYER_MASS: f32 = 12.5;
+pub const GRAVITY_SCALE: f32 = 3.0;
+pub const JUMP_FORCE: f32 = 150.0;
 
-pub const PLAYER_MOVEMENT_SPEED: f32 = 3.5;
+pub const DESPAWN_HEIGHT: f32 = -5.0;
 
 pub mod controls {
     use bevy::prelude::KeyCode;
@@ -40,6 +43,16 @@ pub mod styles {
         style.row_gap = Val::Px(8.0);
         style
     };
+    pub const LEVEL_SELECTION: Style = {
+        let mut style = Style::DEFAULT;
+        style.width = Val::Percent(100.0);
+        style.height = Val::Percent(100.0);
+        style.flex_direction = FlexDirection::Column;
+        style.justify_content = JustifyContent::Center;
+        style.align_items = AlignItems::Center;
+        style.row_gap = Val::Px(8.0);
+        style
+    };
 
     pub const GAMEPLAY_HUD: Style = {
         let mut style = Style::DEFAULT;
@@ -54,6 +67,15 @@ pub mod styles {
         style.justify_content = JustifyContent::Center;
         style.align_items = AlignItems::Center;
         style.width = Val::Px(200.0);
+        style.height = Val::Px(80.0);
+        style
+    };
+
+    pub const SMALL_BUTTON: Style = {
+        let mut style = Style::DEFAULT;
+        style.justify_content = JustifyContent::Center;
+        style.align_items = AlignItems::Center;
+        style.width = Val::Px(100.0);
         style.height = Val::Px(80.0);
         style
     };

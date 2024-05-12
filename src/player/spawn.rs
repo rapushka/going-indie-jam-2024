@@ -12,28 +12,33 @@ impl Plugin for SpawnPlugin {
             .add_event::<SpawnPlayer>()
 
             .add_systems(OnEnter(AppState::Gameplay), (
-                load_spawn_points,
                 spawn_player_on_first_spawn_point,
             )
-                .chain()
-                .in_set(Order::GameLogic))
+                .in_set(LevelLoadingOrder::Prepare))
         ;
     }
 }
 
-#[derive(Component)]
-pub struct SpawnPoint(u8);
+#[derive(Component, Reflect, Default, Debug)]
+#[reflect(Component)]
+pub struct SpawnPoint {
+    pub(crate) chunk_index: u8,
+}
+
+impl SpawnPoint {
+    pub fn new(chunk_index: u8) -> Self { Self { chunk_index } }
+}
 
 #[derive(Event)]
 pub struct SpawnPlayer {
     pub position: Vec3,
 }
 
-#[derive(Resource)]
+#[derive(Resource, Default)]
 pub struct SpawnPointsMap(pub HashMap<u8, Entity>);
 
 impl SpawnPointsMap {
-    pub fn get(&self, index: u8) -> Entity { self.0[&index] }
+    pub fn get(&self, index: u8) -> Option<&Entity> { self.0.get(&index) }
 }
 
 fn load_spawn_points(
@@ -56,7 +61,7 @@ fn new_spawn_point(
     spawn_points.insert(index, commands.spawn((
         Name::new(format!("spawn point {}", index)),
         Transform::from_translation(position),
-        SpawnPoint(index),
+        SpawnPoint::new(index),
     )).id());
 }
 
@@ -65,9 +70,13 @@ fn spawn_player_on_first_spawn_point(
     positions: Query<&Transform, With<SpawnPoint>>,
     mut spawn_player_event: EventWriter<SpawnPlayer>,
 ) {
-    if let Ok(point) = positions.get(spawn_points.get(0)) {
-        spawn_player_event.send(SpawnPlayer { position: point.translation });
+    if let Some(spawn_point_entity) = spawn_points.get(0) {
+        if let Ok(point) = positions.get(*spawn_point_entity) {
+            spawn_player_event.send(SpawnPlayer { position: point.translation });
+        } else {
+            error!("something wrong with the spawn point");
+        }
     } else {
-        error!("something wrong with the spawn point");
+        error!("there's no point with index 0");
     }
 }

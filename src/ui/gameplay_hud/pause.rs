@@ -11,7 +11,7 @@ pub struct PauseMenu;
 struct ContinueButton;
 
 #[derive(Component)]
-struct BackButton;
+pub struct BackToMainMenuButton;
 
 pub struct PausePlugin;
 
@@ -26,7 +26,6 @@ impl Plugin for PausePlugin {
 
             .add_systems(Update, (
                 on_continue_button_clicked,
-                on_back_button_clicked,
             ).run_if(in_state(GameState::Paused)))
 
             .add_systems(OnExit(GameState::Paused), destroy_pause_menu)
@@ -49,7 +48,7 @@ pub fn build_pause_menu(
         .with_children(|parent| {
             create::title(&asset_server, parent, "Paused");
             create::button(&asset_server, parent, "Continue", ContinueButton);
-            create::button(&asset_server, parent, "Back to main menu", BackButton);
+            create::button(&asset_server, parent, "Back to main menu", BackToMainMenuButton);
         });
 }
 
@@ -89,7 +88,7 @@ pub fn on_continue_button_clicked(
 }
 
 pub fn on_back_button_clicked(
-    buttons: Query<Entity, With<BackButton>>,
+    buttons: Query<Entity, With<BackToMainMenuButton>>,
     mut event_reader: EventReader<Clicked>,
     mut next_state: ResMut<NextState<AppState>>,
     mut next_game_state: ResMut<NextState<GameState>>,
