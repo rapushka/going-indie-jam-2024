@@ -4,6 +4,7 @@ use bevy_third_person_camera::*;
 use spawn::SpawnPlayer;
 
 use crate::*;
+use crate::constants::{GRAVITY_SCALE, JUMP_FORCE, PLAYER_MASS};
 use crate::player::despawn::DespawnPlugin;
 use crate::player::movement::*;
 use crate::player::respawn::RespawnPlugin;
@@ -14,16 +15,13 @@ pub mod spawn;
 pub mod respawn;
 pub mod despawn;
 
-const PLAYER_MASS: f32 = 12.5;
-const GRAVITY_SCALE: f32 = 3.0;
-const JUMP_FORCE: f32 = 150.0;
-
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_event::<Jump>()
+            .add_event::<Bonk>()
 
             .add_plugins((
                 SpawnPlugin,
@@ -40,6 +38,8 @@ impl Plugin for PlayerPlugin {
 
             .add_systems(Update, (
                 update_grounded,
+                find_wall_colliding,
+                bonk_players,
             ).in_set(Order::Physics))
 
             .add_systems(Update, (
