@@ -9,6 +9,7 @@ pub mod controls {
     use bevy::prelude::KeyCode;
 
     pub const PAUSE_KEY: KeyCode = KeyCode::Escape;
+    pub const TOGGLE_DEBUG_VIEW: KeyCode = KeyCode::KeyI;
 }
 
 pub mod color {

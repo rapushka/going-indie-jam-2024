@@ -17,7 +17,7 @@ pub fn create_chunk(
     position: Vec2,
     sizes: Vec2,
 ) {
-    apply(
+    create(
         parent,
         meshes,
         materials,
@@ -28,7 +28,7 @@ pub fn create_chunk(
     );
 }
 
-fn apply(
+fn create(
     parent: &mut ChildBuilder,
     meshes: &mut ResMut<Assets<Mesh>>,
     materials: &mut ResMut<Assets<StandardMaterial>>,
@@ -53,5 +53,6 @@ fn apply(
         },
         OnAppState(AppState::Gameplay),
         Aabb { center: position.into(), half_extents: half_size.into() },
-    ));
+    ))
+        .insert(Visibility::Hidden);
 }
