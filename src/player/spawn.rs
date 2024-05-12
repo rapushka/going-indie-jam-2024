@@ -70,8 +70,8 @@ fn spawn_player_on_first_spawn_point(
     positions: Query<&Transform, With<SpawnPoint>>,
     mut spawn_player_event: EventWriter<SpawnPlayer>,
 ) {
-    if let Some(entity) = spawn_points.get(0) {
-        if let Ok(point) = positions.get(*entity) {
+    if let Some(spawn_point_entity) = spawn_points.get(0) {
+        if let Ok(point) = positions.get(*spawn_point_entity) {
             spawn_player_event.send(SpawnPlayer { position: point.translation });
         } else {
             error!("something wrong with the spawn point");

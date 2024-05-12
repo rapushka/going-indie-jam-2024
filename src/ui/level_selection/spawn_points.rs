@@ -32,7 +32,6 @@ fn collect_spawn_points(
 ) {
     for (entity, spawn_point) in query.iter() {
         spawn_points.0.insert(spawn_point.chunk_index, entity);
-        info!("{} is inserted", spawn_point.chunk_index);
     }
 }
 
