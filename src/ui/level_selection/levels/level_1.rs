@@ -15,5 +15,6 @@ pub fn load(
 
     commons::create_ground(parent, assets, Vec3::new(3.0, 6.5, 9.0), Vec3::new(3.0, 1.0, 3.0));
 
-    commons::create_ground(parent, assets, Vec3::new(-11.0, 8., 9.0), Vec3::new(6.0, 1.0, 3.0));
+    commons::create_ground(parent, assets, Vec3::new(-11.0, 8.0, 9.0), Vec3::new(6.0, 1.0, 3.0));
+    commons::create_invisible_wall(parent, Vec3::new(-3.0, 16.5, 9.0), Vec3::new(0.25, 9.0, 10.0));
 }

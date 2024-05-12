@@ -3,7 +3,7 @@ use bevy::math::Vec3;
 use bevy::prelude::*;
 use bevy_rapier3d::geometry::Collider;
 
-use crate::environment::Ground;
+use crate::environment::{Ground, InvisibleWall};
 use crate::extensions::Vec3Extensions;
 use crate::MyAssets;
 use crate::player::spawn::SpawnPoint;
@@ -19,6 +19,19 @@ pub fn create_spawn_point(
         Name::new(format!("spawn point {index}")),
         SpawnPoint { chunk_index: index },
         Transform::from_translation(position),
+    ));
+}
+
+pub fn create_invisible_wall(
+    parent: &mut ChildBuilder,
+    position: Vec3,
+    sizes: Vec3,
+) {
+    parent.spawn((
+        Name::new("invisible wall"),
+        InvisibleWall,
+        Transform::from_translation(position).with_scale(sizes),
+        create_collider(position, sizes, Vec3::ONE),
     ));
 }
 
