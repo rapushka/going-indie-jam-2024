@@ -3,12 +3,16 @@ use bevy::math::Vec3;
 use bevy::prelude::*;
 use bevy_rapier3d::geometry::Collider;
 
+pub use chunks::*;
+
 use crate::environment::{Ground, InvisibleWall};
-use crate::extensions::Vec3Extensions;
+use crate::extensions::{Vec2Extensions, Vec3Extensions};
 use crate::MyAssets;
 use crate::player::spawn::SpawnPoint;
 
 const GRASS_HEIGHT: f32 = 0.2;
+
+mod chunks;
 
 pub fn create_spawn_point(
     parent: &mut ChildBuilder,

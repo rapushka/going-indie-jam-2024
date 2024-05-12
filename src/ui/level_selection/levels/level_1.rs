@@ -7,6 +7,8 @@ use super::*;
 pub fn load(
     parent: &mut ChildBuilder,
     assets: &ResMut<MyAssets>,
+    meshes: &mut ResMut<Assets<Mesh>>,
+    materials: &mut ResMut<Assets<StandardMaterial>>,
 ) {
     commons::create_spawn_point(parent, 0, Vec3::new(0.0, 0.1, 0.0));
     commons::create_ground(parent, assets, Vec3::ZERO, Vec3::new(3.0, 1.0, 3.0));
@@ -17,4 +19,7 @@ pub fn load(
 
     commons::create_ground(parent, assets, Vec3::new(-11.0, 8.0, 9.0), Vec3::new(6.0, 1.0, 3.0));
     commons::create_invisible_wall(parent, Vec3::new(-3.0, 16.5, 9.0), Vec3::new(0.25, 9.0, 10.0));
+
+    commons::create_spawn_point(parent, 1, Vec3::new(3.0, 9.0, 6.0));
+    commons::create_chunk(parent, meshes, materials, 1, Color::RED, Vec2::new(-9.0, 9.0), Vec2::new(6.0, 3.0));
 }

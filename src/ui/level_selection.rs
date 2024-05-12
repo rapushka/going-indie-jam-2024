@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use bevy::prelude::*;
+use bevy_editor_pls::egui::ImageData::Color;
 
 use crate::{AppState, constants, LevelAssets, MyAssets, OnAppState, ui};
 use crate::ui::{Clicked, create};
@@ -66,6 +67,8 @@ fn on_level_button_clicked(
     buttons: Query<&StartLevelButton>,
     mut commands: Commands,
     assets: ResMut<MyAssets>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
     for e in clicked_event.read() {
         if let Ok(button) = buttons.get(e.0) {
@@ -78,7 +81,7 @@ fn on_level_button_clicked(
             ))
                 .with_children(|parent| {
                     match button.0 {
-                        1 => levels::level_1::load(parent, &assets),
+                        1 => levels::level_1::load(parent, &assets, &mut meshes, &mut materials),
                         _ => error!("Not implemented yet"),
                     }
                 });

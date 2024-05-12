@@ -4,7 +4,7 @@ use bevy::render::primitives::Aabb;
 use crate::environment::bounds::Chunk;
 use crate::{AppState, OnAppState};
 
-pub struct SpawnChunkCommand {
+pub struct SpawnChunkCommand { // TODO: mb set parent
     pub chunk_index: u8,
     pub color: Color,
     pub position: Vec3,
