@@ -12,11 +12,9 @@ impl Plugin for SpawnPlugin {
             .add_event::<SpawnPlayer>()
 
             .add_systems(OnEnter(AppState::Gameplay), (
-                load_spawn_points,
                 spawn_player_on_first_spawn_point,
             )
-                .chain()
-                .in_set(Order::GameLogic))
+                .in_set(LevelLoadingOrder::Prepare))
         ;
     }
 }
@@ -24,7 +22,7 @@ impl Plugin for SpawnPlugin {
 #[derive(Component, Reflect, Default, Debug)]
 #[reflect(Component)]
 pub struct SpawnPoint {
-    chunk_index: u8,
+    pub(crate) chunk_index: u8,
 }
 
 impl SpawnPoint {
@@ -36,11 +34,11 @@ pub struct SpawnPlayer {
     pub position: Vec3,
 }
 
-#[derive(Resource)]
+#[derive(Resource, Default)]
 pub struct SpawnPointsMap(pub HashMap<u8, Entity>);
 
 impl SpawnPointsMap {
-    pub fn get(&self, index: u8) -> Entity { self.0[&index] }
+    pub fn get(&self, index: u8) -> Option<&Entity> { self.0.get(&index) }
 }
 
 fn load_spawn_points(
@@ -72,9 +70,13 @@ fn spawn_player_on_first_spawn_point(
     positions: Query<&Transform, With<SpawnPoint>>,
     mut spawn_player_event: EventWriter<SpawnPlayer>,
 ) {
-    if let Ok(point) = positions.get(spawn_points.get(0)) {
-        spawn_player_event.send(SpawnPlayer { position: point.translation });
+    if let Some(entity) = spawn_points.get(0) {
+        if let Ok(point) = positions.get(*entity) {
+            spawn_player_event.send(SpawnPlayer { position: point.translation });
+        } else {
+            error!("something wrong with the spawn point");
+        }
     } else {
-        error!("something wrong with the spawn point");
+        error!("there's no point with index 0");
     }
 }

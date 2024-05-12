@@ -22,11 +22,7 @@ pub struct BoundsPlugin;
 
 impl Plugin for BoundsPlugin {
     fn build(&self, app: &mut App) {
-        app
-            .add_systems(OnEnter(AppState::Gameplay), (
-                create_bounds,
-            ))
-        ;
+        app;
     }
 }
 

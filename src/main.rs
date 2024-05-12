@@ -28,6 +28,12 @@ pub enum Order {
     View,
 }
 
+#[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
+pub enum LevelLoadingOrder {
+    Prepare,
+    Playing,
+}
+
 #[derive(States, Debug, Hash, PartialEq, Eq, Clone, Default)]
 pub enum AppState {
     #[default]
@@ -57,6 +63,7 @@ struct LevelAssets {
 fn main() {
     App::new()
         .configure_sets(Update, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
+        .configure_sets(OnEnter(AppState::Gameplay), (LevelLoadingOrder::Prepare, LevelLoadingOrder::Playing).chain())
         .configure_sets(PostUpdate, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
         .init_state::<AppState>()
         .init_state::<GameState>()
@@ -83,6 +90,8 @@ fn main() {
             AnimationsPlugin,
             UiPlugin,
         ))
+
+        .add_systems(OnExit(AppState::Loading), || { info!("=== Game Started ===") })
 
         .add_systems(Update, (
             despawn_not_in_state,

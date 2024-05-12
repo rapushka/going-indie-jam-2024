@@ -22,8 +22,7 @@ impl Plugin for EnvironmentPlugin {
                 BoundsPlugin,
             ))
 
-            .add_systems(OnEnter(AppState::Gameplay), (
-                spawn_floor,
+            .add_systems(OnEnter(AppState::Loading), (
                 spawn_light,
             ))
         ;
@@ -55,7 +54,7 @@ fn spawn_light(
             transform: Transform::from_xyz(0.0, 5.0, 0.0),
             ..default()
         },
-        OnAppState(AppState::Gameplay),
+        // OnAppState(AppState::Gameplay),
     ));
 }
 
