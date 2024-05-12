@@ -44,7 +44,7 @@ fn create_grass(
         Name::new("ground"),
         Ground,
         Transform::from_translation(position),
-        create_collider(position, sizes.set_y(GRASS_HEIGHT)),
+        create_collider(position, sizes.set_y(GRASS_HEIGHT), Vec3::ONE),
     ));
 }
 
@@ -62,13 +62,15 @@ fn create_ground_mesh(
             transform: Transform::from_translation(position).with_scale(sizes),
             ..default()
         },
-        create_collider(Vec3::new(0.0, -GRASS_HEIGHT, 0.0), sizes.add_y(-GRASS_HEIGHT)),
+        create_collider(Vec3::new(0.0, -GRASS_HEIGHT, 0.0), sizes.add_y(-GRASS_HEIGHT), sizes),
     ))
         .with_children(spawn_children)
     ;
 }
 
-fn create_collider(offset: Vec3, sizes: Vec3) -> Collider {
+fn create_collider(offset: Vec3, sizes: Vec3, transform_scale: Vec3) -> Collider {
+    let sizes = sizes / transform_scale;
+
     Collider::compound(vec![(
         Vec3::new(offset.x, offset.y, offset.z),
         Quat::IDENTITY,
