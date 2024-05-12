@@ -77,8 +77,10 @@ fn on_level_button_clicked(
                 InheritedVisibility::default(),
             ))
                 .with_children(|parent| {
-                    levels::level_1::load(parent, &assets);
-                    // super::create_ground(parent, assets, Vec3::ZERO, Vec3::ONE);
+                    match button.0 {
+                        1 => levels::level_1::load(parent, &assets),
+                        _ => error!("Not implemented yet"),
+                    }
                 });
         }
     }
