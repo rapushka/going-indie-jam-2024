@@ -3,6 +3,8 @@ pub const PLAYER_MASS: f32 = 12.5;
 pub const GRAVITY_SCALE: f32 = 3.0;
 pub const JUMP_FORCE: f32 = 150.0;
 
+pub const DESPAWN_HEIGHT: f32 = -5.0;
+
 pub mod controls {
     use bevy::prelude::KeyCode;
 
@@ -68,7 +70,7 @@ pub mod styles {
         style.height = Val::Px(80.0);
         style
     };
-    
+
     pub const SMALL_BUTTON: Style = {
         let mut style = Style::DEFAULT;
         style.justify_content = JustifyContent::Center;

@@ -4,7 +4,7 @@ use bevy::render::primitives::Aabb;
 
 use crate::environment::bounds::Chunk;
 use crate::extensions::{Vec2Extensions, Vec3Extensions};
-use crate::{AppState, OnAppState};
+use crate::{AppState, constants, OnAppState};
 
 const CHUNK_TRANSPARENCY: f32 = 0.5;
 
@@ -17,30 +17,14 @@ pub fn create_chunk(
     position: Vec2,
     sizes: Vec2,
 ) {
-    // commands.add(crate::environment::bounds::SpawnChunkCommand {
-    //     chunk_index: index,
-    //     color: color.with_a(CHUNK_TRANSPARENCY),
-    //     position: position.as_flat().set_y(-10.0),
-    //     size: sizes.as_flat().set_y(0.1),
-    // });
-
     apply(
         parent,
         meshes,
         materials,
         index,
         color.with_a(CHUNK_TRANSPARENCY),
-        position.as_flat().set_y(-10.0),
-        sizes.as_flat().set_y(0.1),
-    );
-    apply(
-        parent,
-        meshes,
-        materials,
-        index,
-        color.with_a(CHUNK_TRANSPARENCY),
-        position.as_flat().set_y(-10.0),
-        sizes.as_flat().set_y(0.1),
+        position.as_flat().set_y(0.0),
+        sizes.as_flat().set_y(100.0),
     );
 }
 

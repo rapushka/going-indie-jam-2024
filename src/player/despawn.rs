@@ -1,12 +1,10 @@
-use bevy::math::bounding::Aabb3d;
 use bevy::prelude::*;
 use bevy::render::primitives::Aabb;
 
 use crate::{AppState, Order};
+use crate::constants::DESPAWN_HEIGHT;
 use crate::environment::bounds::Chunk;
 use crate::player::Player;
-
-const DESPAWN_HEIGHT: f32 = -10.0;
 
 pub struct DespawnPlugin;
 

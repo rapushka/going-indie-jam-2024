@@ -15,6 +15,9 @@ impl Plugin for SpawnPointsPlugin {
 
             .add_systems(Update, (
                 collect_spawn_points,
+            ).in_set(LevelLoadingOrder::Prepare))
+
+            .add_systems(Update, (
                 prepare_first_spawn_point,
             ).in_set(LevelLoadingOrder::Prepare)
                 .run_if(in_state(AppState::LevelSelection)))
