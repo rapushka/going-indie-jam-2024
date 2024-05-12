@@ -78,7 +78,7 @@ fn main() {
         .init_state::<AppState>()
         .init_state::<GameState>()
 
-        .insert_resource(WinitSettings::desktop_app())
+        // .insert_resource(WinitSettings::desktop_app())
 
         .add_loading_state(
             LoadingState::new(AppState::Loading)
@@ -104,6 +104,8 @@ fn main() {
             AnimationsPlugin,
             UiPlugin,
         ))
+
+        .add_systems(PreStartup, show_loading_curtain)
 
         .add_systems(OnExit(AppState::Loading), || { info!("=== Game Started ===") })
 
@@ -132,4 +134,19 @@ pub fn despawn_not_in_state(
             }
         }
     }
+}
+
+fn show_loading_curtain(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+) {
+    commands.spawn((
+        Name::new("loading curtain"),
+        NodeBundle {
+            background_color: Color::BLACK.into(),
+            ..default()
+        },
+        OnAppState(AppState::Loading),
+    ))
+        .with_children(|parent| { ui::create::text(&asset_server, "Loading...", parent, 16.0); });
 }

@@ -7,7 +7,7 @@ use crate::ui::level_selection::LevelSelectionPlugin;
 mod main_menu;
 mod level_selection;
 mod gameplay_hud;
-mod create;
+pub(crate) mod create;
 
 pub mod order {
     use bevy::prelude::ZIndex;
