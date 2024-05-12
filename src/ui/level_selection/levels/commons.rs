@@ -6,8 +6,21 @@ use bevy_rapier3d::geometry::Collider;
 use crate::environment::Ground;
 use crate::extensions::Vec3Extensions;
 use crate::MyAssets;
+use crate::player::spawn::SpawnPoint;
 
 const GRASS_HEIGHT: f32 = 0.2;
+
+pub fn create_spawn_point(
+    parent: &mut ChildBuilder,
+    index: u8,
+    position: Vec3,
+) {
+    parent.spawn((
+        Name::new(format!("spawn point {index}")),
+        SpawnPoint { chunk_index: index },
+        Transform::from_translation(position),
+    ));
+}
 
 pub fn create_ground(
     parent: &mut ChildBuilder,
