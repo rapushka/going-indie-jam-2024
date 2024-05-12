@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use bevy::prelude::*;
 
-use crate::{AppState, constants, LevelAssets, OnAppState, ui};
+use crate::{AppState, constants, LevelAssets, MyAssets, OnAppState, ui};
 use crate::ui::{Clicked, create};
 use crate::ui::level_selection::levels::LoadLevelCommand;
 use crate::ui::level_selection::spawn_points::SpawnPointsPlugin;
@@ -65,10 +65,21 @@ fn on_level_button_clicked(
     mut clicked_event: EventReader<Clicked>,
     buttons: Query<&StartLevelButton>,
     mut commands: Commands,
+    assets: ResMut<MyAssets>,
 ) {
     for e in clicked_event.read() {
         if let Ok(button) = buttons.get(e.0) {
-            commands.add(LoadLevelCommand::new(button.0));
+            commands.spawn((
+                Name::new(format!("level {}", button.0)),
+                OnAppState(AppState::Gameplay),
+                Transform::default(),
+                GlobalTransform::default(),
+                InheritedVisibility::default(),
+            ))
+                .with_children(|parent| {
+                    levels::level_1::load(parent, &assets);
+                    // super::create_ground(parent, assets, Vec3::ZERO, Vec3::ONE);
+                });
         }
     }
 }

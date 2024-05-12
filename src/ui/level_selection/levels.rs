@@ -3,12 +3,9 @@ use bevy::ecs::system::Command;
 use bevy::prelude::*;
 use bevy_rapier3d::na::DimAdd;
 
-use crate::ui::level_selection::levels::level_1::LoadLevel1Command;
-pub use commons::*;
+pub mod commons;
 
-mod commons;
-
-mod level_1;
+pub mod level_1;
 
 pub struct LoadLevelCommand {
     pub level_number: u8,
@@ -20,7 +17,7 @@ impl LoadLevelCommand {
 
 impl Command for LoadLevelCommand {
     fn apply(self, world: &mut World) {
-        LoadLevel1Command.apply(world);
+        // LoadLevel1Command.apply(world);
     }
 }
 

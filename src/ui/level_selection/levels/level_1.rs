@@ -1,22 +1,12 @@
-use bevy::core::Name;
-use bevy::ecs::system::Command;
 use bevy::math::Vec3;
 use bevy::prelude::*;
 
-use crate::{AppState, MyAssets, OnAppState};
+use crate::*;
+use super::*;
 
-pub struct LoadLevel1Command;
-
-impl Command for LoadLevel1Command {
-    fn apply(self, world: &mut World) {
-        let root = world.spawn((
-            Name::new("level 1"),
-            OnAppState(AppState::Gameplay),
-        )).id();
-
-        super::CreateGroundCommand {
-            parent: Some(root),
-            ..default()
-        }.apply(world);
-    }
+pub fn load(
+    parent: &mut ChildBuilder,
+    assets: &ResMut<MyAssets>,
+) {
+    commons::create_ground(parent, assets, Vec3::ZERO, Vec3::ONE);
 }
