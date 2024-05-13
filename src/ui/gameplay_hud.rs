@@ -1,8 +1,10 @@
 use bevy::prelude::*;
 use crate::{AppState, GameState, OnAppState, ui};
 use pause::*;
+use crate::level_progress::{LevelProgress, LevelProgressPlugin};
+use crate::stars::StarsText;
 
-pub(crate) mod pause;
+pub mod pause;
 
 pub struct GameplayHudPlugin;
 
@@ -15,6 +17,11 @@ impl Plugin for GameplayHudPlugin {
                 build_hud,
                 start_gameplay,
             ))
+
+            .add_systems(Update, (
+                update_stars_text,
+            )
+                .run_if(in_state(AppState::Gameplay)))
         ;
     }
 }
@@ -46,7 +53,23 @@ fn build_hud(
         .with_children(|parent| {
             parent.spawn((
                 Name::new("stars count text"),
+                StarsText,
                 ui::create::text_bundle(&asset_server, "stars: 0/0", 64.0),
             ));
         });
+}
+
+fn update_stars_text(
+    level_progress: Res<LevelProgress>,
+    mut texts: Query<&mut Text, With<StarsText>>,
+) {
+    if !level_progress.is_changed() {
+        return;
+    }
+
+    for mut text in texts.iter_mut() {
+        let collected = level_progress.collected_stars;
+        let total = level_progress.total_stars;
+        text.sections[0].value = format!("stars {}/{}", collected, total);
+    }
 }

@@ -12,7 +12,7 @@ mod create;
 pub struct Star;
 
 #[derive(Component)]
-pub struct StarText;
+pub struct StarsText;
 
 #[derive(Event)]
 pub struct StarCollected;
