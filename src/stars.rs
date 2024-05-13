@@ -11,6 +11,9 @@ mod create;
 #[derive(Component)]
 pub struct Star;
 
+#[derive(Component)]
+pub struct StarText;
+
 #[derive(Event)]
 pub struct StarCollected;
 
