@@ -10,6 +10,7 @@ use crate::animations::*;
 use crate::blender_workflow::BlenderWorkflowPlugin;
 use crate::camera::*;
 use crate::environment::EnvironmentPlugin;
+use crate::level_progress::LevelProgressPlugin;
 use crate::player::*;
 use crate::player::movement::{JumpForce, MovementSpeed};
 use crate::stars::StarsPlugin;
@@ -24,6 +25,7 @@ mod ui;
 mod blender_workflow;
 mod extensions;
 mod stars;
+mod level_progress;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub enum Order {
@@ -109,6 +111,7 @@ fn main() {
             AnimationsPlugin,
             UiPlugin,
             StarsPlugin,
+            LevelProgressPlugin,
         ))
 
         .add_systems(PreStartup, show_loading_curtain)
