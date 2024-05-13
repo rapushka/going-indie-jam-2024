@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use crate::AppState;
+use crate::{AppState, GameState};
 use crate::stars::{Star, StarCollected};
 
 #[derive(Resource, Default)]
@@ -59,6 +59,7 @@ fn on_star_collected(
 
 fn check_level_completed(
     progress: Res<LevelProgress>,
+    mut next_game_state: ResMut<NextState<GameState>>,
 ) {
     if !progress.is_changed() {
         return;
@@ -66,6 +67,6 @@ fn check_level_completed(
 
     if progress.total_stars > 0
         && progress.collected_stars >= progress.total_stars {
-        info!("Level completed!");
+        next_game_state.set(GameState::GameOver);
     }
 }

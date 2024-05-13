@@ -56,6 +56,7 @@ pub enum GameState {
     Undefined,
     Playing,
     Paused,
+    GameOver, // i mean it's level completed
 }
 
 #[derive(Component)]
