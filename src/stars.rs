@@ -4,6 +4,7 @@ use bevy_rapier3d::plugin::RapierContext;
 pub use create::*;
 
 use crate::{AppState, Order};
+use crate::constants::STAR_ROTATION_SPEED;
 use crate::player::Player;
 
 mod create;
@@ -30,6 +31,13 @@ impl Plugin for StarsPlugin {
                 .in_set(Order::GameLogic)
                 .run_if(in_state(AppState::Gameplay)),
             )
+
+            .add_systems(Update, (
+                rotate_stars,
+            )
+                .in_set(Order::View)
+                .run_if(in_state(AppState::Gameplay)),
+            )
         ;
     }
 }
@@ -51,3 +59,10 @@ fn collect_stars(
     }
 }
 
+fn rotate_stars(
+    mut stars: Query<&mut Transform, With<Star>>,
+) {
+    for mut star_transform in stars.iter_mut() {
+        star_transform.rotate(Quat::from_rotation_y(STAR_ROTATION_SPEED));
+    }
+}
