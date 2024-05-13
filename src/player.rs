@@ -58,6 +58,10 @@ impl Plugin for PlayerPlugin {
             .add_systems(Update, (
                 rotate_to_moving_direction,
             ).in_set(Order::View))
+        
+            .add_systems(OnExit(GameState::Playing), (
+                reset_move_direction,
+            ))
         ;
     }
 }
