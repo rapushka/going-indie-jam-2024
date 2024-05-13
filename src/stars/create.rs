@@ -9,7 +9,7 @@ pub fn create_star(
     assets: &ResMut<MyAssets>,
     position: Vec3,
 ) {
-    let sizes = Vec3::new(1.0, 1.0, 1.0);
+    let sizes = Vec3::ONE * 1.0;
 
     parent.spawn((
         Name::new("star"),
@@ -19,6 +19,6 @@ pub fn create_star(
             transform: Transform::from_translation(position).with_scale(sizes),
             ..default()
         },
-        Collider::cuboid(sizes.x, sizes.y, sizes.z),
+        Collider::ball(sizes.x),
     ));
 }
