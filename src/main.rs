@@ -12,6 +12,7 @@ use crate::camera::*;
 use crate::environment::EnvironmentPlugin;
 use crate::player::*;
 use crate::player::movement::{JumpForce, MovementSpeed};
+use crate::stars::StarsPlugin;
 use crate::ui::UiPlugin;
 
 mod player;
@@ -107,6 +108,7 @@ fn main() {
             EnvironmentPlugin,
             AnimationsPlugin,
             UiPlugin,
+            StarsPlugin,
         ))
 
         .add_systems(PreStartup, show_loading_curtain)
