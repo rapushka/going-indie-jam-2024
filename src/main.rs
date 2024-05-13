@@ -15,6 +15,7 @@ use crate::level_progress::LevelProgressPlugin;
 use crate::player::*;
 use crate::player::movement::{JumpForce, MovementSpeed};
 use crate::stars::StarsPlugin;
+use crate::tutors::TutorsPlugin;
 use crate::ui::UiPlugin;
 
 mod player;
@@ -28,6 +29,7 @@ mod extensions;
 mod stars;
 mod level_progress;
 mod delay;
+mod tutors;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub enum Order {
@@ -116,6 +118,7 @@ fn main() {
             StarsPlugin,
             LevelProgressPlugin,
             DelayPlugin,
+            TutorsPlugin,
         ))
 
         .add_systems(PreStartup, show_loading_curtain)
