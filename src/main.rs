@@ -22,6 +22,7 @@ mod animations;
 mod ui;
 mod blender_workflow;
 mod extensions;
+mod stars;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub enum Order {
@@ -67,6 +68,9 @@ struct LevelAssets {
 struct MyAssets {
     #[asset(path = "models/Ground.gltf#Scene0")]
     ground: Handle<Scene>,
+
+    #[asset(path = "models/Star.gltf#Scene0")]
+    star: Handle<Scene>,
 }
 
 fn main() {
