@@ -90,6 +90,25 @@ pub fn text_bundle(
     text: &str,
     font_size: f32,
 ) -> TextBundle {
+    colored_text_bundle(asset_server, text, font_size, constants::color::DEFAULT_TEXT, ZIndex::default())
+}
+
+pub fn light_text_bundle(
+    asset_server: &Res<AssetServer>,
+    text: &str,
+    font_size: f32,
+    z_index: ZIndex,
+) -> TextBundle {
+    colored_text_bundle(asset_server, text, font_size, constants::color::LIGHT_TEXT, z_index)
+}
+
+fn colored_text_bundle(
+    asset_server: &Res<AssetServer>,
+    text: &str,
+    font_size: f32,
+    color: Color,
+    z_index: ZIndex,
+) -> TextBundle {
     TextBundle {
         text: Text {
             sections: vec![
@@ -98,12 +117,13 @@ pub fn text_bundle(
                     TextStyle {
                         font: asset_server.load("fonts/FiraSans-Bold.ttf"),
                         font_size,
-                        color: constants::color::DEFAULT_TEXT,
+                        color,
                     },
                 )],
             justify: JustifyText::Center,
             ..default()
         },
+        z_index,
         ..default()
     }
 }

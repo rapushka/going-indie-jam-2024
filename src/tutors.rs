@@ -37,13 +37,13 @@ fn build_tutorial_speech(
         NodeBundle {
             style: constants::styles::SPEECH_BUBBLE,
             z_index: ui::order::TUTOR,
-            background_color: Color::rgba(0.0, 0.0, 0.0, 0.5).into(),
+            background_color: Color::rgba(0.0, 0.0, 0.0, 0.95).into(),
             ..default()
         },
     ))
         .with_children(|parent| {
             parent.spawn((
-                ui::create::text_bundle(&asset_server, "abc", 32.0),
+                ui::create::light_text_bundle(&asset_server, "abc", 32.0, ui::order::TUTOR_TEXT),
                 SpeechBubble,
             ));
         })

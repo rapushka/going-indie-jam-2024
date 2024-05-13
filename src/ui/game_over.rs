@@ -17,7 +17,7 @@ fn build_game_over_screen(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
 ) {
-    const TITLE: &'static str = "Congratulation! You've completed the level!";
+    const TITLE: &'static str = "Congratulation!\nYou've completed the level!";
     let delay = constants::DELAY_BEFORE_GAME_OVER_SCREEN_SHOW;
 
     commands.spawn((

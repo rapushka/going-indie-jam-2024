@@ -24,6 +24,7 @@ pub mod color {
     pub const PRESSED_BUTTON: Color = Color::rgb(0.89, 0.58, 0.28);
 
     pub const DEFAULT_TEXT: Color = Color::rgb(0.30, 0.25, 0.22);
+    pub const LIGHT_TEXT: Color = Color::rgb(0.9, 0.9, 0.9);
 }
 
 pub mod styles {
