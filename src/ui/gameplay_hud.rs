@@ -33,7 +33,10 @@ fn build_hud(
         Name::new("HUD"),
         NodeBundle {
             style: Style {
-                margin: UiRect::all(Val::Px(20.0)),
+                padding: UiRect::all(Val::Px(25.0)),
+                width: Val::Percent(100.0),
+                height: Val::Percent(100.0),
+                flex_direction: FlexDirection::RowReverse,
                 ..default()
             },
             ..default()
