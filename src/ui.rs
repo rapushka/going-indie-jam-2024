@@ -1,13 +1,15 @@
 use bevy::prelude::*;
 pub use main_menu::*;
 use crate::constants;
+use crate::ui::game_over::GameOverPlugin;
 use crate::ui::gameplay_hud::GameplayHudPlugin;
 use crate::ui::level_selection::LevelSelectionPlugin;
 
 mod main_menu;
 mod level_selection;
 mod gameplay_hud;
-pub(crate) mod create;
+mod game_over;
+pub mod create;
 
 pub mod order {
     use bevy::prelude::ZIndex;
@@ -33,6 +35,7 @@ impl Plugin for UiPlugin {
                 MainMenuPlugin,
                 LevelSelectionPlugin,
                 GameplayHudPlugin,
+                GameOverPlugin,
             ))
 
             .add_systems(Update, (

@@ -5,6 +5,10 @@ pub const JUMP_FORCE: f32 = 150.0;
 
 pub const DESPAWN_HEIGHT: f32 = -5.0;
 
+pub const STAR_ROTATION_SPEED: f32 = 0.05;
+
+pub const DELAY_BEFORE_GAME_OVER_SCREEN_SHOW: f32 = 0.5;
+
 pub mod controls {
     use bevy::prelude::KeyCode;
 

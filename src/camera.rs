@@ -14,8 +14,8 @@ impl Plugin for CameraPlugin {
 
             .add_systems(OnEnter(AppState::Gameplay), lock_camera)
 
-            .add_systems(OnEnter(GameState::Paused), unlock_camera)
-            .add_systems(OnExit(GameState::Paused), lock_camera)
+            .add_systems(OnEnter(GameState::Playing), lock_camera)
+            .add_systems(OnExit(GameState::Playing), unlock_camera)
 
             .add_systems(OnExit(AppState::Gameplay), unlock_camera)
         ;

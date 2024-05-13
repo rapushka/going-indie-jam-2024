@@ -9,9 +9,12 @@ use bevy_third_person_camera::*;
 use crate::animations::*;
 use crate::blender_workflow::BlenderWorkflowPlugin;
 use crate::camera::*;
+use crate::delay::DelayPlugin;
 use crate::environment::EnvironmentPlugin;
+use crate::level_progress::LevelProgressPlugin;
 use crate::player::*;
 use crate::player::movement::{JumpForce, MovementSpeed};
+use crate::stars::StarsPlugin;
 use crate::ui::UiPlugin;
 
 mod player;
@@ -22,6 +25,9 @@ mod animations;
 mod ui;
 mod blender_workflow;
 mod extensions;
+mod stars;
+mod level_progress;
+mod delay;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub enum Order {
@@ -52,6 +58,7 @@ pub enum GameState {
     Undefined,
     Playing,
     Paused,
+    GameOver, // i mean it's level completed
 }
 
 #[derive(Component)]
@@ -67,6 +74,9 @@ struct LevelAssets {
 struct MyAssets {
     #[asset(path = "models/Ground.gltf#Scene0")]
     ground: Handle<Scene>,
+
+    #[asset(path = "models/Star.gltf#Scene0")]
+    star: Handle<Scene>,
 }
 
 fn main() {
@@ -103,6 +113,9 @@ fn main() {
             EnvironmentPlugin,
             AnimationsPlugin,
             UiPlugin,
+            StarsPlugin,
+            LevelProgressPlugin,
+            DelayPlugin,
         ))
 
         .add_systems(PreStartup, show_loading_curtain)

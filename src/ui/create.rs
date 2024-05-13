@@ -81,21 +81,29 @@ pub fn text(
 ) {
     parent.spawn((
         Name::new(format!("text: {text}")),
-        TextBundle {
-            text: Text {
-                sections: vec![
-                    TextSection::new(
-                        text,
-                        TextStyle {
-                            font: asset_server.load("fonts/FiraSans-Bold.ttf"),
-                            font_size,
-                            color: constants::color::DEFAULT_TEXT,
-                        },
-                    )],
-                justify: JustifyText::Center,
-                ..default()
-            },
+        text_bundle(asset_server, text, font_size),
+    ));
+}
+
+pub fn text_bundle(
+    asset_server: &Res<AssetServer>,
+    text: &str,
+    font_size: f32,
+) -> TextBundle {
+    TextBundle {
+        text: Text {
+            sections: vec![
+                TextSection::new(
+                    text,
+                    TextStyle {
+                        font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                        font_size,
+                        color: constants::color::DEFAULT_TEXT,
+                    },
+                )],
+            justify: JustifyText::Center,
             ..default()
         },
-    ));
+        ..default()
+    }
 }

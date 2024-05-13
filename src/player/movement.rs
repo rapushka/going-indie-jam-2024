@@ -160,3 +160,11 @@ pub fn bonk_players(
         }
     }
 }
+
+pub fn reset_move_direction(
+    mut players: Query<&mut MoveDirection, With<Player>>,
+) {
+    for mut direction in players.iter_mut() {
+        direction.0 = Vec3::ZERO;
+    }
+}
