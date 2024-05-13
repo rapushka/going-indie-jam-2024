@@ -9,6 +9,7 @@ use bevy_third_person_camera::*;
 use crate::animations::*;
 use crate::blender_workflow::BlenderWorkflowPlugin;
 use crate::camera::*;
+use crate::delay::DelayPlugin;
 use crate::environment::EnvironmentPlugin;
 use crate::level_progress::LevelProgressPlugin;
 use crate::player::*;
@@ -26,6 +27,7 @@ mod blender_workflow;
 mod extensions;
 mod stars;
 mod level_progress;
+mod delay;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub enum Order {
@@ -113,6 +115,7 @@ fn main() {
             UiPlugin,
             StarsPlugin,
             LevelProgressPlugin,
+            DelayPlugin,
         ))
 
         .add_systems(PreStartup, show_loading_curtain)

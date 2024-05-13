@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use crate::{AppState, constants, GameState, OnAppState, ui};
+use crate::delay::ShowAfterDelay;
 use crate::ui::gameplay_hud::pause::BackToMainMenuButton;
 
 pub struct GameOverPlugin;
@@ -17,6 +18,7 @@ fn build_game_over_screen(
     asset_server: Res<AssetServer>,
 ) {
     const TITLE: &'static str = "Congratulation! You've completed the level!";
+    let delay = constants::DELAY_BEFORE_GAME_OVER_SCREEN_SHOW;
 
     commands.spawn((
         Name::new("Game Over Screen"),
@@ -24,10 +26,12 @@ fn build_game_over_screen(
             style: constants::styles::MAIN_MENU,
             ..default()
         },
+        ShowAfterDelay(Timer::from_seconds(delay, TimerMode::Once)),
         OnAppState(AppState::Gameplay),
     ))
         .with_children(|parent| {
             ui::create::text(&asset_server, TITLE, parent, 64.0);
             ui::create::button(&asset_server, parent, "Back To Main Menu", BackToMainMenuButton);
-        });
+        })
+        .insert(Visibility::Hidden);
 }
