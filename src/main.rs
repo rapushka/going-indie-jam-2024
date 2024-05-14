@@ -4,6 +4,7 @@ use bevy_asset_loader::prelude::*;
 use bevy_editor_pls::EditorPlugin;
 use bevy_inspector_egui::quick::*;
 use bevy_rapier3d::prelude::*;
+use bevy_text_animation::TextAnimatorPlugin;
 use bevy_third_person_camera::*;
 
 use crate::animations::*;
@@ -15,6 +16,7 @@ use crate::level_progress::LevelProgressPlugin;
 use crate::player::*;
 use crate::player::movement::{JumpForce, MovementSpeed};
 use crate::stars::StarsPlugin;
+use crate::tutors::TutorsPlugin;
 use crate::ui::UiPlugin;
 
 mod player;
@@ -28,6 +30,7 @@ mod extensions;
 mod stars;
 mod level_progress;
 mod delay;
+mod tutors;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub enum Order {
@@ -35,6 +38,8 @@ pub enum Order {
     Physics,
     GameLogic,
     View,
+    Tutor,
+    Cleanups,
 }
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
@@ -58,6 +63,7 @@ pub enum GameState {
     Undefined,
     Playing,
     Paused,
+    Tutor,
     GameOver, // i mean it's level completed
 }
 
@@ -81,7 +87,7 @@ struct MyAssets {
 
 fn main() {
     App::new()
-        .configure_sets(Update, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
+        .configure_sets(Update, (Order::Input, Order::GameLogic, Order::Physics, Order::View, Order::Tutor, Order::Cleanups).chain())
         .configure_sets(OnEnter(AppState::Gameplay), (LevelLoadingOrder::Prepare, LevelLoadingOrder::Playing).chain())
         .configure_sets(PostUpdate, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
 
@@ -97,17 +103,19 @@ fn main() {
                 .load_collection::<MyAssets>()
         )
 
+        // dependencies
         .add_plugins((
-            // dependencies
             DefaultPlugins,
-            // WorldInspectorPlugin::new(),
             RapierPhysicsPlugin::<NoUserData>::default(),
             RapierDebugRenderPlugin::default(),
             ThirdPersonCameraPlugin,
             BlenderWorkflowPlugin,
             EditorPlugin::default(),
+            TextAnimatorPlugin,
+        ))
 
-            // game
+        // game
+        .add_plugins((
             CameraPlugin,
             PlayerPlugin,
             EnvironmentPlugin,
@@ -116,6 +124,7 @@ fn main() {
             StarsPlugin,
             LevelProgressPlugin,
             DelayPlugin,
+            TutorsPlugin,
         ))
 
         .add_systems(PreStartup, show_loading_curtain)

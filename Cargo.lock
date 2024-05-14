@@ -1166,6 +1166,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_text_animation"
+version = "0.1.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "47eac339e078b45dd7c9383de993cd8e6da1b5b268096bde4fd70e36b8b5d279"
+dependencies = [
+ "bevy",
+ "utf8_slice",
+]
+
+[[package]]
 name = "bevy_third_person_camera"
 version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2419,6 +2429,7 @@ dependencies = [
  "bevy_gltf_components",
  "bevy_rapier3d",
  "bevy_registry_export",
+ "bevy_text_animation",
  "bevy_third_person_camera",
  "log",
 ]
@@ -4284,6 +4295,12 @@ dependencies = [
  "idna",
  "percent-encoding",
 ]
+
+[[package]]
+name = "utf8_slice"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "44109e280ecf0f5d8e6ee671c0ee650008275c51dc9e494badd11fb39d785408"
 
 [[package]]
 name = "uuid"

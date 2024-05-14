@@ -24,6 +24,7 @@ pub mod color {
     pub const PRESSED_BUTTON: Color = Color::rgb(0.89, 0.58, 0.28);
 
     pub const DEFAULT_TEXT: Color = Color::rgb(0.30, 0.25, 0.22);
+    pub const LIGHT_TEXT: Color = Color::rgb(0.9, 0.9, 0.9);
 }
 
 pub mod styles {
@@ -64,6 +65,24 @@ pub mod styles {
         style.width = Val::Percent(100.0);
         style.height = Val::Percent(100.0);
         style.padding = UiRect::all(Val::Px(10.0));
+        style
+    };
+
+    pub const SPEECH_BUBBLE: Style = {
+        let mut style = Style::DEFAULT;
+        style.width = Val::Percent(75.0);
+        style.height = Val::Percent(20.0);
+        style.flex_direction = FlexDirection::Column;
+        style.justify_content = JustifyContent::Center;
+        style.align_self = AlignSelf::FlexEnd;
+        style.align_items = AlignItems::Center;
+        style.margin = UiRect {
+            left: Val::Auto,
+            right: Val::Auto,
+            top: Val::Auto,
+            bottom: Val::Px(20.0),
+        };
+
         style
     };
 

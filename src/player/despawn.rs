@@ -17,17 +17,21 @@ impl Plugin for DespawnPlugin {
             .add_systems(Update, (
                 player_suicide,
                 kill_player_with_too_low_position,
-                handle_player_death,
             ).chain()
                 .in_set(Order::GameLogic)
                 .run_if(in_state(AppState::Gameplay)))
 
+            .add_systems(Update, (
+                handle_player_death,
+            )
+                .in_set(Order::Cleanups)
+                .run_if(in_state(AppState::Gameplay)))
         ;
     }
 }
 
 #[derive(Event)]
-pub struct KillPlayer(Entity);
+pub struct KillPlayer(pub(crate) Entity);
 
 #[derive(Event)]
 pub struct PlayerDead {

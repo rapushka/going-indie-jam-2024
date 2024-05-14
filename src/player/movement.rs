@@ -1,12 +1,12 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
-use log::log;
 
 use crate::constants;
-use crate::constants::GRAVITY_SCALE;
 use crate::environment::Ground;
 use crate::extensions::Vec3Extensions;
 use crate::player::Player;
+
+pub mod invisible_walls;
 
 #[derive(Component)]
 pub struct MovementSpeed(pub f32);

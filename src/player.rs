@@ -7,6 +7,7 @@ use crate::*;
 use crate::constants::{GRAVITY_SCALE, JUMP_FORCE, PLAYER_MASS};
 use crate::player::despawn::DespawnPlugin;
 use crate::player::movement::*;
+use crate::player::movement::invisible_walls::*;
 use crate::player::respawn::RespawnPlugin;
 use crate::player::spawn::SpawnPlugin;
 
@@ -51,6 +52,7 @@ impl Plugin for PlayerPlugin {
             .add_systems(Update, (
                 move_player,
                 do_jump,
+                find_invisible_wall_colliding,
             )
                 .in_set(Order::GameLogic)
                 .run_if(in_state(GameState::Playing)))
@@ -58,7 +60,7 @@ impl Plugin for PlayerPlugin {
             .add_systems(Update, (
                 rotate_to_moving_direction,
             ).in_set(Order::View))
-        
+
             .add_systems(OnExit(GameState::Playing), (
                 reset_move_direction,
             ))
