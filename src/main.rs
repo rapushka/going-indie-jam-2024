@@ -61,6 +61,7 @@ pub enum GameState {
     Undefined,
     Playing,
     Paused,
+    Tutor,
     GameOver, // i mean it's level completed
 }
 
