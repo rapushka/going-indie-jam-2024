@@ -1,9 +1,10 @@
 use bevy::prelude::*;
 use crate::constants;
-use crate::player::despawn::KillPlayer;
+use crate::player::despawn::{KillPlayer, PlayerDead};
 use crate::player::movement::invisible_walls::HitInvisibleWall;
 use crate::player::movement::IsGrounded;
 use crate::player::Player;
+use crate::player::spawn::SpawnPlayer;
 use crate::tutors::{StartTutor, Tutor};
 
 #[derive(Component, Default)]
@@ -14,6 +15,23 @@ pub struct OnHitInvisibleWall;
 
 #[derive(Component, Default)]
 pub struct OnDebugViewActivated;
+
+#[derive(Component)]
+pub struct OnSpawnAt(pub u8);
+
+pub(super) fn on_respawn_at(
+    mut dead_event: EventReader<PlayerDead>,
+    tutors: Query<(Entity, &OnSpawnAt), (With<OnSpawnAt>, With<Tutor>)>,
+    mut event: EventWriter<StartTutor>,
+) {
+    for e in dead_event.read() {
+        for (tutor, observed_spawn_point) in tutors.iter() {
+            if observed_spawn_point.0 == e.chunk_index {
+                event.send(StartTutor(tutor));
+            }
+        }
+    }
+}
 
 pub(super) fn on_level_started(
     tutors: Query<Entity, (With<OnLevelStarted>, With<Tutor>)>,

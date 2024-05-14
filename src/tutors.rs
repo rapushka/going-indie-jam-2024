@@ -49,6 +49,7 @@ impl Plugin for TutorsPlugin {
                 on_grounded_after_hit_invisible_wall,
                 on_player_kill_after_hit_invisible_wall,
                 on_debug_view_activated,
+                on_respawn_at,
             ).in_set(Order::Tutor))
 
             .add_systems(Update, (
