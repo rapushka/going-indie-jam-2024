@@ -43,9 +43,8 @@ impl Plugin for TutorsPlugin {
 
             .add_systems(OnEnter(AppState::Loading), build_tutorial_speech)
 
-            .add_systems(OnEnter(AppState::Gameplay), on_level_started)
-
             .add_systems(Update, (
+                on_level_started,
                 on_grounded_after_hit_invisible_wall,
                 on_player_kill_after_hit_invisible_wall,
                 on_debug_view_activated,

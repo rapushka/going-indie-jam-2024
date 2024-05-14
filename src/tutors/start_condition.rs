@@ -34,11 +34,14 @@ pub(super) fn on_respawn_at(
 }
 
 pub(super) fn on_level_started(
+    mut spawn_player_event: EventReader<SpawnPlayer>,
     tutors: Query<Entity, (With<OnLevelStarted>, With<Tutor>)>,
     mut event: EventWriter<StartTutor>,
 ) {
-    for tutor in tutors.iter() {
-        event.send(StartTutor(tutor));
+    for _ in spawn_player_event.read() {
+        for tutor in tutors.iter() {
+            event.send(StartTutor(tutor));
+        }
     }
 }
 
