@@ -33,7 +33,10 @@ pub fn load(
     create_chunk(root, meshes, materials, 1, Color::RED, vec2(-20.0, 6.0), vec2(12.0, 24.0));
 
     add_tutor::<OnLevelStarted>(root, vec!["I want all these stars so much!"]);
-    add_tutor::<OnHitInvisibleWall>(root, vec!["Ouch"]);
+    add_tutor::<OnHitInvisibleWall>(root, vec![
+        "IS THAT INVIS-WALL THERE?!",
+        "Okay, I know, try press I key",
+    ]);
 }
 
 fn vec3(x: f32, y: f32, z: f32) -> Vec3 { Vec3::new(x, y, z) }
