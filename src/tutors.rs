@@ -1,18 +1,13 @@
 use bevy::prelude::*;
 use crate::{AppState, constants, ui};
+use crate::tutors::start_condition::*;
 
-#[derive(Component)]
-pub struct OnLevelStarted;
-
-#[derive(Component)]
-pub struct OnGroundedAfterHitInvisibleWall;
-
-#[derive(Component)]
-pub struct OnDebugViewActivated;
+pub mod start_condition;
+pub mod create;
 
 #[derive(Component)]
 pub struct Tutor {
-    speeches: Vec<String>,
+    speeches: Vec<&'static str>,
 }
 
 #[derive(Component)]
@@ -24,6 +19,8 @@ impl Plugin for TutorsPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_systems(OnEnter(AppState::Loading), build_tutorial_speech)
+
+            .add_systems(OnEnter(AppState::Gameplay), on_level_started)
         ;
     }
 }
