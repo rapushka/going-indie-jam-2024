@@ -73,7 +73,6 @@ fn handle_player_death(
     mut death_event: EventWriter<PlayerDead>,
 ) {
     for e in kill_player_event.read() {
-        info!("dead");
         if let Ok((player, transform)) = players.get(e.0) {
             let mut chunk_index = 0;
             for (chunk, bounds) in chunks.iter() {

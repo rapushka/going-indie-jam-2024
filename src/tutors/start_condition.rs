@@ -64,7 +64,6 @@ pub(super) fn on_player_kill_after_hit_invisible_wall(
     test: Query<&Player>,
 ) {
     for e in kill_player_event.read() {
-        info!("{}", test.get(e.0).is_ok());
         if let Ok(_) = players.get(e.0) {
             for tutor in tutors.iter() {
                 event.send(StartTutor(tutor));
