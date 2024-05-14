@@ -47,7 +47,7 @@ impl Plugin for TutorsPlugin {
 
             .add_systems(Update, (
                 start_tutor,
-                skip_tutor,
+                skip_tutor.run_if(in_state(GameState::Tutor)),
                 play_next_tutor_step,
                 set_tutor_visibility,
             )

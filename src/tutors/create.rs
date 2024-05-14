@@ -1,6 +1,7 @@
 use bevy::core::Name;
 use bevy::hierarchy::ChildBuilder;
-use bevy::prelude::{Bundle, Commands, Component};
+use bevy::prelude::Component;
+
 use crate::AppState::Gameplay;
 use crate::OnAppState;
 use crate::tutors::Tutor;
