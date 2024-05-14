@@ -4,6 +4,7 @@ use bevy_asset_loader::prelude::*;
 use bevy_editor_pls::EditorPlugin;
 use bevy_inspector_egui::quick::*;
 use bevy_rapier3d::prelude::*;
+use bevy_text_animation::TextAnimatorPlugin;
 use bevy_third_person_camera::*;
 
 use crate::animations::*;
@@ -99,17 +100,19 @@ fn main() {
                 .load_collection::<MyAssets>()
         )
 
+        // dependencies
         .add_plugins((
-            // dependencies
             DefaultPlugins,
-            // WorldInspectorPlugin::new(),
             RapierPhysicsPlugin::<NoUserData>::default(),
             RapierDebugRenderPlugin::default(),
             ThirdPersonCameraPlugin,
             BlenderWorkflowPlugin,
             EditorPlugin::default(),
+            TextAnimatorPlugin,
+        ))
 
-            // game
+        // game
+        .add_plugins((
             CameraPlugin,
             PlayerPlugin,
             EnvironmentPlugin,
