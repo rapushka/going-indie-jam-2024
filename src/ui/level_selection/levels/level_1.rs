@@ -5,7 +5,7 @@ use tutors::create::add_tutor;
 
 use crate::*;
 use crate::stars::create_star;
-use crate::tutors::start_condition::{OnHitInvisibleWall, OnLevelStarted};
+use crate::tutors::start_condition::{OnDebugViewActivated, OnHitInvisibleWall, OnLevelStarted};
 use super::*;
 
 pub fn load(
@@ -36,6 +36,10 @@ pub fn load(
     add_tutor::<OnHitInvisibleWall>(root, vec![
         "IS THAT INVIS-WALL THERE?!",
         "Okay, I know, try press I key",
+    ]);
+    add_tutor::<OnDebugViewActivated>(root, vec![
+        "Look, there's another chunk,\nwhich means, if you die there – you'll respawn there as well!",
+        "So, lets die!;)",
     ]);
 }
 

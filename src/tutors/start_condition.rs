@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use crate::constants;
 use crate::player::despawn::KillPlayer;
 use crate::player::movement::invisible_walls::HitInvisibleWall;
 use crate::player::movement::IsGrounded;
@@ -50,6 +51,18 @@ pub(super) fn on_player_kill_after_hit_invisible_wall(
             for tutor in tutors.iter() {
                 event.send(StartTutor(tutor));
             }
+        }
+    }
+}
+
+pub(super) fn on_debug_view_activated(
+    input: Res<ButtonInput<KeyCode>>,
+    tutors: Query<Entity, (With<OnDebugViewActivated>, With<Tutor>)>,
+    mut event: EventWriter<StartTutor>,
+) {
+    if input.just_pressed(constants::controls::TOGGLE_DEBUG_VIEW) {
+        for tutor in tutors.iter() {
+            event.send(StartTutor(tutor));
         }
     }
 }
