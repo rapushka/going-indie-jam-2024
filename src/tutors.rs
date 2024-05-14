@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use bevy_text_animation::TextSimpleAnimator;
 
-use crate::{AppState, constants, GameState, ui};
+use crate::{AppState, constants, GameState, Order, ui};
 use crate::tutors::start_condition::*;
 
 pub mod start_condition;
@@ -44,6 +44,11 @@ impl Plugin for TutorsPlugin {
             .add_systems(OnEnter(AppState::Loading), build_tutorial_speech)
 
             .add_systems(OnEnter(AppState::Gameplay), on_level_started)
+
+            .add_systems(Update, (
+                on_grounded_after_hit_invisible_wall,
+                on_player_kill_after_hit_invisible_wall,
+            ).in_set(Order::Tutor))
 
             .add_systems(Update, (
                 start_tutor,

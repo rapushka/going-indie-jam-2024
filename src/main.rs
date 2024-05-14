@@ -38,6 +38,8 @@ pub enum Order {
     Physics,
     GameLogic,
     View,
+    Tutor,
+    Cleanups,
 }
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
@@ -85,7 +87,7 @@ struct MyAssets {
 
 fn main() {
     App::new()
-        .configure_sets(Update, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
+        .configure_sets(Update, (Order::Input, Order::GameLogic, Order::Physics, Order::View, Order::Tutor, Order::Cleanups).chain())
         .configure_sets(OnEnter(AppState::Gameplay), (LevelLoadingOrder::Prepare, LevelLoadingOrder::Playing).chain())
         .configure_sets(PostUpdate, (Order::Input, Order::GameLogic, Order::Physics, Order::View).chain())
 
