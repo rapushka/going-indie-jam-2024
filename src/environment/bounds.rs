@@ -1,5 +1,6 @@
 use bevy::ecs::system::Command;
 use bevy::prelude::*;
+use bevy_rapier3d::prelude::DebugRenderContext;
 
 use crate::{AppState, constants};
 pub use crate::environment::bounds::command::SpawnChunkCommand;
@@ -48,6 +49,7 @@ pub fn toggle_chunks_visibility(
     mut commands: Commands,
     input: Res<ButtonInput<KeyCode>>,
     chunks: Query<(Entity, &Visibility), With<Chunk>>,
+    mut rapier_debugger: ResMut<DebugRenderContext>,
 ) {
     if input.just_pressed(constants::controls::TOGGLE_DEBUG_VIEW) {
         for (chunk, visibility) in chunks.iter()
@@ -55,5 +57,7 @@ pub fn toggle_chunks_visibility(
             let visibility = if visibility == Visibility::Visible { Visibility::Hidden } else { Visibility::Visible };
             commands.entity(chunk).insert(visibility);
         }
+
+        rapier_debugger.enabled = !rapier_debugger.enabled;
     }
 }
