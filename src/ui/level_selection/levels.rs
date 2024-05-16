@@ -6,6 +6,8 @@ use bevy_rapier3d::na::DimAdd;
 pub mod commons;
 
 pub mod level_1;
+pub mod level_2;
+pub mod level_3;
 
 pub struct LoadLevelCommand {
     pub level_number: u8,
