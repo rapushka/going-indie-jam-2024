@@ -63,6 +63,7 @@ fn set_camera_locked(
     value: bool,
 ) {
     for mut camera in cameras.iter_mut() {
+        camera.active = value;
         camera.cursor_lock_active = value;
 
         let mut window = windows.get_single_mut().unwrap();
