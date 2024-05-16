@@ -9,6 +9,8 @@ pub const STAR_ROTATION_SPEED: f32 = 0.05;
 
 pub const DELAY_BEFORE_GAME_OVER_SCREEN_SHOW: f32 = 0.5;
 
+pub const MOVE_TO_SPEED: f32 = 12.0; 
+
 pub mod controls {
     use bevy::prelude::KeyCode;
 

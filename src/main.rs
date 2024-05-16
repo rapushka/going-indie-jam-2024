@@ -107,10 +107,13 @@ fn main() {
         .add_plugins((
             DefaultPlugins,
             RapierPhysicsPlugin::<NoUserData>::default(),
-            RapierDebugRenderPlugin::default(),
+            RapierDebugRenderPlugin {
+                enabled: false,
+                ..default()
+            },
             ThirdPersonCameraPlugin,
             BlenderWorkflowPlugin,
-            EditorPlugin::default(),
+            // EditorPlugin::default(),
             TextAnimatorPlugin,
         ))
 
@@ -166,6 +169,7 @@ fn show_loading_curtain(
         Name::new("loading curtain"),
         NodeBundle {
             background_color: Color::BLACK.into(),
+            style: constants::styles::GAMEPLAY_HUD,
             ..default()
         },
         OnAppState(AppState::Loading),

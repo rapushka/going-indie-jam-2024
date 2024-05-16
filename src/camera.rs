@@ -4,6 +4,7 @@ use bevy_third_person_camera::*;
 use bevy_third_person_camera::camera::*;
 
 use crate::{AppState, GameState};
+use crate::tutors::waypoints::move_to::{LookAt, MoveTo};
 
 pub struct CameraPlugin;
 
@@ -29,7 +30,7 @@ fn spawn_camera(
         ThirdPersonCamera {
             cursor_lock_toggle_enabled: false,
             cursor_lock_active: false,
-            mouse_sensitivity: 5.0,
+            sensitivity: Vec2::new(5.0, 5.0),
             zoom: Zoom::new(3.0, 10.0),
             offset_enabled: true,
             offset: Offset::new(0.0, 1.0),
@@ -63,6 +64,7 @@ fn set_camera_locked(
     value: bool,
 ) {
     for mut camera in cameras.iter_mut() {
+        camera.active = value;
         camera.cursor_lock_active = value;
 
         let mut window = windows.get_single_mut().unwrap();
