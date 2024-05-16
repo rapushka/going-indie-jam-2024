@@ -41,7 +41,7 @@ pub(super) fn look_at(
 
         let direction = target_position - current_position;
 
-        let rotation = Quat::from_rotation_arc(Vec3::Z, direction.normalize());
+        let rotation = Quat::from_rotation_arc(-Vec3::Z, direction.normalize());
 
         let rotation_speed = constants::LOOK_AT_SPEED;
         let rotation_amount = rotation_speed * time.delta_seconds();
