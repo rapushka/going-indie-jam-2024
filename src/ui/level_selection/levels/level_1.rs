@@ -49,7 +49,9 @@ pub fn load(
     add_tutor::<OnDebugViewActivated>(root, vec![
         "Look, there's another chunk,\nwhich means, if you die there – you'll respawn there as well!",
         "So, lets die!;)",
-    ], vec![]);
+    ], vec![
+        Waypoint::new(vec3(-10.0, 10.0, -20.0), vec3(-20.0, 0.0, 6.0))
+    ]);
 
     add_tutor_on_respawn_at(root, 1, vec!["heck ya!"], vec![]);
 }
