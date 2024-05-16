@@ -6,6 +6,7 @@ use tutors::create::*;
 use crate::*;
 use crate::stars::create_star;
 use crate::tutors::start_condition::{OnDebugViewActivated, OnHitInvisibleWall, OnLevelStarted};
+use crate::tutors::waypoints::Waypoint;
 use super::*;
 
 pub fn load(
@@ -32,16 +33,19 @@ pub fn load(
 
     create_chunk(root, meshes, materials, 1, Color::RED, vec2(-20.0, 6.0), vec2(12.0, 24.0));
 
-    add_tutor::<OnLevelStarted>(root, vec!["I want all these stars so much!"]);
+    add_tutor::<OnLevelStarted>(root, vec!["I want all these stars so much!"], vec![Waypoint::new(Vec3::ONE, Vec3::ZERO)]);
+
     add_tutor::<OnHitInvisibleWall>(root, vec![
         "IS THAT INVIS-WALL THERE?!",
         "Okay, I know, try press I key",
-    ]);
+    ], vec![]);
+
     add_tutor::<OnDebugViewActivated>(root, vec![
         "Look, there's another chunk,\nwhich means, if you die there – you'll respawn there as well!",
         "So, lets die!;)",
-    ]);
-    add_tutor_on_respawn_at(root, 1, vec!["heck ya!"]);
+    ], vec![]);
+
+    add_tutor_on_respawn_at(root, 1, vec!["heck ya!"], vec![]);
 }
 
 fn vec3(x: f32, y: f32, z: f32) -> Vec3 { Vec3::new(x, y, z) }

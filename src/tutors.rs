@@ -3,15 +3,18 @@ use bevy_text_animation::TextSimpleAnimator;
 
 use crate::{AppState, constants, GameState, Order, ui};
 use crate::tutors::start_condition::*;
+use crate::tutors::waypoints::{Waypoint, WaypointsPlugin};
 
 pub mod start_condition;
 pub mod create;
+pub mod waypoints;
 
 const SPEECH_SPEED: f32 = 50.0;
 
 #[derive(Component)]
 pub struct Tutor {
     speeches: Vec<&'static str>,
+    waypoints: Vec<Waypoint>,
 }
 
 #[derive(Component)]
@@ -40,6 +43,8 @@ impl Plugin for TutorsPlugin {
         app
             .add_event::<StartTutor>()
             .add_event::<PlayNextTutorStep>()
+
+            .add_plugins(WaypointsPlugin)
 
             .add_systems(OnEnter(AppState::Loading), build_tutorial_speech)
 

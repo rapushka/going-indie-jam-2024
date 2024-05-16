@@ -4,6 +4,7 @@ use bevy_third_person_camera::*;
 use bevy_third_person_camera::camera::*;
 
 use crate::{AppState, GameState};
+use crate::tutors::waypoints::move_to::{LookAt, MoveTo};
 
 pub struct CameraPlugin;
 
@@ -12,9 +13,9 @@ impl Plugin for CameraPlugin {
         app
             .add_systems(OnEnter(AppState::Loading), spawn_camera)
 
-            .add_systems(OnEnter(AppState::Gameplay), lock_camera)
+            .add_systems(OnEnter(AppState::Gameplay), (lock_camera, cleanup_cameras))
 
-            .add_systems(OnEnter(GameState::Playing), lock_camera)
+            .add_systems(OnEnter(GameState::Playing), (lock_camera, cleanup_cameras))
             .add_systems(OnExit(GameState::Playing), unlock_camera)
 
             .add_systems(OnExit(AppState::Gameplay), unlock_camera)
@@ -69,5 +70,18 @@ fn set_camera_locked(
         let mut window = windows.get_single_mut().unwrap();
         window.cursor.visible = !value;
         window.cursor.grab_mode = if value { CursorGrabMode::Locked } else { CursorGrabMode::None };
+    }
+}
+
+// remove redundant components when camera locks
+fn cleanup_cameras(
+    mut commands: Commands,
+    cameras: Query<Entity, With<ThirdPersonCamera>>,
+) {
+    for camera in cameras.iter() {
+        commands.entity(camera)
+            .remove::<MoveTo>()
+            .remove::<LookAt>()
+        ;
     }
 }
