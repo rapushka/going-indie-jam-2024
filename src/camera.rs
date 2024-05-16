@@ -29,7 +29,7 @@ fn spawn_camera(
         ThirdPersonCamera {
             cursor_lock_toggle_enabled: false,
             cursor_lock_active: false,
-            mouse_sensitivity: 5.0,
+            sensitivity: Vec2::new(5.0, 5.0),
             zoom: Zoom::new(3.0, 10.0),
             offset_enabled: true,
             offset: Offset::new(0.0, 1.0),
