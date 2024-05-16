@@ -8,6 +8,7 @@ use bevy_text_animation::TextAnimatorPlugin;
 use bevy_third_person_camera::*;
 
 use crate::animations::*;
+use crate::audio::AudioPlugin;
 use crate::blender_workflow::BlenderWorkflowPlugin;
 use crate::camera::*;
 use crate::delay::DelayPlugin;
@@ -31,6 +32,7 @@ mod stars;
 mod level_progress;
 mod delay;
 mod tutors;
+mod audio;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub enum Order {
@@ -128,6 +130,7 @@ fn main() {
             LevelProgressPlugin,
             DelayPlugin,
             TutorsPlugin,
+            AudioPlugin,
         ))
 
         .add_systems(PreStartup, show_loading_curtain)
