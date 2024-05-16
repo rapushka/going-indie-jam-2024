@@ -31,6 +31,9 @@ impl PlayingTutor {
     pub fn get_waypoint(&self) -> Option<Waypoint> { self.waypoints.get(self.current_step as usize).copied() }
 }
 
+#[derive(Component)]
+pub struct TransformBeforeDetach(Transform);
+
 #[derive(Event)]
 pub struct StartTutor(pub Entity);
 
@@ -145,7 +148,8 @@ fn play_next_tutor_step(
     mut commands: Commands,
     bubbles: Query<(Entity, &PlayingTutor), (Changed<PlayingTutor>, With<SpeechBubble>)>,
     mut next_game_state: ResMut<NextState<GameState>>,
-    mut cameras: Query<Entity, With<Camera> >,
+    mut cameras: Query<(Entity, &mut Transform), With<Camera>>,
+    transform_before_detach: Query<&TransformBeforeDetach>,
 ) {
     for (bubble, playing_tutor) in bubbles.iter() {
         let mut bubble_entity = commands.entity(bubble);
@@ -155,27 +159,34 @@ fn play_next_tutor_step(
 
             // Camera
             if let Some(waypoint) = playing_tutor.get_waypoint() {
-                for camera in cameras.iter() {
+                for (camera, camera_transform) in cameras.iter() {
                     commands.entity(camera)
+                        .insert(TransformBeforeDetach(camera_transform.clone()))
                         .insert(MoveTo(waypoint.position))
                         .insert(LookAt(waypoint.look_at))
                     ;
                 }
             }
-            
+
             next_game_state.set(GameState::Tutor);
         } else {
             bubble_entity.remove::<TextSimpleAnimator>();
 
             // Camera
-            for camera in cameras.iter() {
-                commands.entity(camera)
+            for (camera, mut camera_transform) in cameras.iter_mut() {
+                let mut entity = commands.entity(camera);
+
+                if let Ok(old_transform) = transform_before_detach.get(camera) {
+                    entity.insert(old_transform.0.clone());
+                }
+
+                entity
+                    .remove::<TransformBeforeDetach>()
                     .remove::<MoveTo>()
                     .remove::<LookAt>()
-                    .insert(Transform::default())
                 ;
             }
-            
+
             next_game_state.set(GameState::Playing);
         }
     }
