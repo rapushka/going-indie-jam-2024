@@ -37,7 +37,7 @@ pub fn load(
         root,
         vec!["I want all these stars so much!"],
         vec![
-            Waypoint::new(Vec3::new(9.0, 6.5, 3.0), Vec3::new(7.0, 4.5, 1.0))
+            Waypoint::new(Vec3::new(12.0, 9.5, -2.0), Vec3::new(7.0, 4.5, 1.0))
         ],
     );
 

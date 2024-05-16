@@ -32,21 +32,8 @@ pub(super) fn move_to(
 
 pub(super) fn look_at(
     mut entities: Query<(&mut Transform, &LookAt)>,
-    time: Res<Time>,
 ) {
     for (mut transform, look_at) in entities.iter_mut() {
-        let target_position = look_at.0;
-
-        let current_position = transform.translation;
-
-        let direction = target_position - current_position;
-
-        let rotation = Quat::from_rotation_arc(-Vec3::Z, direction.normalize());
-
-        let rotation_speed = constants::LOOK_AT_SPEED;
-        let rotation_amount = rotation_speed * time.delta_seconds();
-        let interpolated_rotation = Quat::slerp(transform.rotation, rotation, rotation_amount);
-
-        transform.rotation = interpolated_rotation;
+        transform.look_at(look_at.0, Vec3::Y);
     }
 }
