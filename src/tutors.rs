@@ -4,6 +4,7 @@ use bevy_text_animation::TextSimpleAnimator;
 use crate::{AppState, constants, GameState, Order, ui};
 use crate::tutors::start_condition::*;
 use crate::tutors::waypoints::{Waypoint, WaypointsPlugin};
+use crate::tutors::waypoints::move_to::{LookAt, MoveTo};
 
 pub mod start_condition;
 pub mod create;
@@ -21,10 +22,13 @@ pub struct Tutor {
 pub struct PlayingTutor {
     current_step: u8,
     speeches: Vec<&'static str>,
+    waypoints: Vec<Waypoint>,
 }
 
 impl PlayingTutor {
     pub fn get_current(&self) -> Option<&'static str> { self.speeches.get(self.current_step as usize).copied() }
+
+    pub fn get_waypoint(&self) -> Option<Waypoint> { self.waypoints.get(self.current_step as usize).copied() }
 }
 
 #[derive(Event)]
@@ -112,6 +116,7 @@ fn start_tutor(
                     .insert(PlayingTutor {
                         current_step: 0,
                         speeches: tutor.speeches.clone(),
+                        waypoints: tutor.waypoints.clone(),
                     })
                 ;
             }
@@ -140,6 +145,7 @@ fn play_next_tutor_step(
     mut commands: Commands,
     bubbles: Query<(Entity, &PlayingTutor), (Changed<PlayingTutor>, With<SpeechBubble>)>,
     mut next_game_state: ResMut<NextState<GameState>>,
+    mut cameras: Query<Entity, With<Camera> >,
 ) {
     for (bubble, playing_tutor) in bubbles.iter() {
         let mut bubble_entity = commands.entity(bubble);
@@ -147,10 +153,29 @@ fn play_next_tutor_step(
         if let Some(next_step) = playing_tutor.get_current() {
             bubble_entity.insert(TextSimpleAnimator::new(next_step, SPEECH_SPEED));
 
+            // Camera
+            if let Some(waypoint) = playing_tutor.get_waypoint() {
+                for camera in cameras.iter() {
+                    commands.entity(camera)
+                        .insert(MoveTo(waypoint.position))
+                        .insert(LookAt(waypoint.look_at))
+                    ;
+                }
+            }
+            
             next_game_state.set(GameState::Tutor);
         } else {
             bubble_entity.remove::<TextSimpleAnimator>();
 
+            // Camera
+            for camera in cameras.iter() {
+                commands.entity(camera)
+                    .remove::<MoveTo>()
+                    .remove::<LookAt>()
+                    .insert(Transform::default())
+                ;
+            }
+            
             next_game_state.set(GameState::Playing);
         }
     }

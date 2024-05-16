@@ -2,10 +2,10 @@ use bevy::prelude::*;
 use crate::constants;
 
 #[derive(Component)]
-pub struct MoveTo(Vec3);
+pub struct MoveTo(pub Vec3);
 
 #[derive(Component)]
-pub struct LookAt(Vec3);
+pub struct LookAt(pub Vec3);
 
 pub(super) fn move_to(
     mut commands: Commands,

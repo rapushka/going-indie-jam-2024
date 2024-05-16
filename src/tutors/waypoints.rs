@@ -4,6 +4,7 @@ use crate::tutors::waypoints::move_to::*;
 
 pub mod move_to;
 
+#[derive(Clone, Copy)]
 pub struct Waypoint {
     pub position: Vec3,
     pub look_at: Vec3,
