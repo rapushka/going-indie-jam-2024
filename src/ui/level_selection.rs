@@ -82,6 +82,8 @@ fn on_level_button_clicked(
                 .with_children(|parent| {
                     match button.0 {
                         1 => levels::level_1::load(parent, &assets, &mut meshes, &mut materials),
+                        2 => levels::level_2::load(parent, &assets, &mut meshes, &mut materials),
+                        3 => levels::level_3::load(parent, &assets, &mut meshes, &mut materials),
                         _ => error!("Not implemented yet"),
                     }
                 });

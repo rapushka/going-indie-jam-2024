@@ -44,7 +44,9 @@ pub fn load(
     add_tutor::<OnHitInvisibleWall>(root, vec![
         "IS THAT INVIS-WALL THERE?!",
         "Okay, I know, try press I key",
-    ], vec![]);
+    ], vec![
+        Waypoint::new(Vec3::new(0.0, 2.0, 5.0), Vec3::new(0.0, 2.0, 0.0))
+    ]);
 
     add_tutor::<OnDebugViewActivated>(root, vec![
         "Look, there's another chunk,\nwhich means, if you die there – you'll respawn there as well!",

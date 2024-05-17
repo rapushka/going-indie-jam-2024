@@ -39,6 +39,24 @@ pub fn create_invisible_wall(
     ));
 }
 
+/// i.e. without collider
+pub fn create_empty_ground(
+    parent: &mut ChildBuilder,
+    assets: &ResMut<MyAssets>,
+    position: Vec3,
+    sizes: Vec3,
+) {
+    parent.spawn((
+        Name::new("cube grass (without collider)"),
+        SceneBundle {
+            scene: assets.ground.clone(),
+            transform: Transform::from_translation(position).with_scale(sizes),
+            ..default()
+        },
+    ))
+    ;
+}
+
 pub fn create_ground(
     parent: &mut ChildBuilder,
     assets: &ResMut<MyAssets>,
@@ -48,6 +66,22 @@ pub fn create_ground(
     create_ground_mesh(parent, &assets, position, sizes, |parent| {
         create_grass(parent, position, sizes);
     });
+}
+
+pub fn create_invisible_ground(
+    parent: &mut ChildBuilder,
+    _assets: &ResMut<MyAssets>,
+    position: Vec3,
+    sizes: Vec3,
+) {
+    parent.spawn((
+        Name::new("invisible grass"),
+        create_collider(Vec3::new(0.0, -GRASS_HEIGHT, 0.0), sizes.add_y(-GRASS_HEIGHT), sizes),
+    ))
+        .with_children(|parent| {
+            create_grass(parent, position, sizes);
+        })
+    ;
 }
 
 fn create_grass(
